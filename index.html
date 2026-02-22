@@ -2,94 +2,150 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Karosh Group</title>
-  <meta name="description" content="Karosh Group: Karosh Studio (Kids & Family), Karosh Group (Weddings & Graduation), Karosh Agency (Reklam & Marketing), Karosh Event (Coming Soon)." />
+  <meta name="description" content="Karosh Group — Studio, Weddings, Agency" />
   <meta name="theme-color" content="#0b0b0f" />
   <style>
     :root{
       --bg:#07070b;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.10);
+      --line: rgba(255,255,255,.12);
       --text:#fff;
-      --muted:#c9c9d6;
-      --muted2:#9a9ab0;
-      --line:rgba(255,255,255,.12);
-      --panel:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.55);
       --accent:#b8e94b;
-      --shadow:0 20px 60px rgba(0,0,0,.55);
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 22px;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:
-      radial-gradient(1200px 700px at 30% 10%, rgba(184,233,75,.12), transparent 55%),
-      radial-gradient(900px 600px at 70% 15%, rgba(134,210,255,.10), transparent 55%),
-      var(--bg);
-      color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
-    a{color:inherit}
-    .wrap{max-width:1120px;margin:0 auto;padding:22px 18px 70px}
-    .nav{display:flex;align-items:center;justify-content:space-between;gap:14px;position:sticky;top:0;
-      padding:14px 0;background:linear-gradient(to bottom, rgba(7,7,11,.94), rgba(7,7,11,.55), transparent);
-      backdrop-filter: blur(8px); z-index:10;}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.8px;text-transform:uppercase}
-    .dot{width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 6px rgba(184,233,75,.10)}
-    .navlinks{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
-    .navlinks a{text-decoration:none;color:var(--muted);font-weight:650}
-    .navlinks a:hover{color:#fff}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      padding:12px 16px;border-radius:999px;background:var(--accent);color:#0b0b0f;
-      font-weight:850;text-decoration:none;box-shadow:0 18px 50px rgba(184,233,75,.18)}
-    .btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.18);box-shadow:none}
-    .hero{margin-top:10px;border-radius:28px;overflow:hidden;box-shadow:var(--shadow);
-      border:1px solid rgba(255,255,255,.10);
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       background:
-        linear-gradient(180deg, rgba(20,20,30,.35), rgba(10,10,14,.92)),
-        var(--hero-bg);
-      background-size: cover;background-position:center;
-      min-height:560px;display:flex;align-items:flex-end}
-    .heroInner{padding:38px 22px 22px; width:100%}
-    h1{margin:0;font-size:54px;line-height:1.05;letter-spacing:-.8px;white-space:pre-line}
-    .sub{margin-top:10px;color:var(--muted);font-size:18px;line-height:1.65;max-width:72ch}
-    .ctaRow{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
-    .cards{margin-top:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .card{background:var(--panel);border:1px solid rgba(255,255,255,.10);
-      border-radius:22px; overflow:hidden; box-shadow:0 12px 45px rgba(0,0,0,.45)}
-    .cardTop{height:178px;background:linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.72));
-      background-size:cover;background-position:center;}
-    .cardBody{padding:16px 16px 18px}
-    .cardTitle{display:flex;align-items:center;gap:10px;font-weight:900;font-size:20px}
-    .tag{margin-left:auto;font-size:12px;font-weight:850;color:#0b0b0f;background:var(--accent);
-      padding:6px 10px;border-radius:999px}
-    .cardSub{margin-top:2px;color:var(--muted2);font-weight:700}
-    .bullets{margin:12px 0 14px;padding-left:18px;color:var(--muted);line-height:1.7}
-    .bullets li{margin:4px 0}
-    .section{margin-top:58px}
-    .section h2{margin:0;font-size:36px;letter-spacing:-.4px;text-align:center}
-    .section p.lead{margin:10px auto 0;color:var(--muted);text-align:center;max-width:74ch;line-height:1.7}
-    .pkgGrid{margin-top:18px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-    .pkg{background:var(--panel);border:1px solid rgba(255,255,255,.10);border-radius:18px;overflow:hidden}
-    .pkgImg{height:130px;background:linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.78));
-      background-size:cover;background-position:center}
-    .pkgBody{padding:14px}
-    .pkgTitle{font-weight:900;display:flex;justify-content:space-between;gap:10px}
-    .price{color:var(--accent);font-weight:900}
-    .pkgMeta{margin-top:6px;color:var(--muted);line-height:1.6;font-size:14px}
-    .pkgFooter{padding:0 14px 14px}
-    .hr{height:1px;background:rgba(255,255,255,.10);margin:14px 0}
-    .contactBox{margin-top:18px;display:grid;grid-template-columns:1.05fr .95fr;gap:14px}
-    .panel{background:var(--panel);border:1px solid rgba(255,255,255,.10);border-radius:20px;padding:18px}
-    .kv{display:grid;gap:10px;margin-top:12px}
-    .kv div{display:flex;gap:10px;align-items:flex-start;color:var(--muted)}
-    .kv b{color:#fff}
-    .small{color:var(--muted2);font-size:13px;line-height:1.6}
-    footer{margin-top:48px;color:var(--muted2);font-size:13px;text-align:center}
-    @media (max-width: 980px){
-      h1{font-size:42px}
-      .cards{grid-template-columns:1fr}
-      .pkgGrid{grid-template-columns:1fr 1fr}
-      .contactBox{grid-template-columns:1fr}
+        radial-gradient(900px 600px at 75% 20%, rgba(184,233,75,.12), transparent 55%),
+        radial-gradient(1200px 700px at 35% 15%, rgba(134,210,255,.10), transparent 55%),
+        var(--bg);
+      overflow-x:hidden;
     }
-    @media (max-width: 520px){
-      h1{font-size:34px}
-      .pkgGrid{grid-template-columns:1fr}
-      .navlinks{display:none}
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:1120px; margin:0 auto; padding:18px 18px 90px;}
+    .nav{
+      position:sticky; top:0; z-index:50;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+      background: linear-gradient(to bottom, rgba(7,7,11,.92), rgba(7,7,11,.55), transparent);
+      backdrop-filter: blur(8px);
+    }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:.7px;}
+    .dot{width:10px;height:10px;border-radius:50%; background:var(--accent); box-shadow:0 0 0 6px rgba(184,233,75,.12);}
+    .navlinks{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
+    .navlinks a{color:var(--muted); font-weight:650}
+    .navlinks a:hover{color:#fff}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color:#fff;
+      font-weight:750;
+      gap:10px;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      user-select:none;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.07)}
+    .btn-accent{
+      background: var(--accent);
+      color:#0b0b0f;
+      border-color: rgba(0,0,0,.15);
+      box-shadow: 0 10px 26px rgba(184,233,75,.18);
+    }
+    .btn-accent:hover{background: rgba(184,233,75,.92)}
+    .hero{
+      margin-top:14px;
+      border-radius: calc(var(--radius) + 8px);
+      overflow:hidden;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.40), rgba(0,0,0,.72)),
+        url("assets/hero-bg.jpg");
+      background-size: cover;
+      background-position: center;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .heroInner{padding: 56px 26px 28px; text-align:center;}
+    h1{
+      margin:0;
+      font-size: clamp(30px, 4.2vw, 54px);
+      line-height:1.05;
+      font-weight: 950;
+      letter-spacing:-.02em;
+      text-shadow: 0 16px 45px rgba(0,0,0,.60);
+      white-space:pre-line;
+    }
+    .sub{margin:12px auto 18px; max-width: 720px; color: var(--muted); font-weight: 600; font-size: 14px;}
+    .ctaRow{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:10px}
+    .cards{
+      margin: 22px auto 0;
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      padding: 0 18px 22px;
+    }
+    @media (max-width: 980px){.cards{grid-template-columns: repeat(2, minmax(0, 1fr));}}
+    @media (max-width: 520px){.cards{grid-template-columns: 1fr;} .heroInner{padding: 42px 18px 22px;}}
+    .card{
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+      box-shadow: 0 12px 30px rgba(0,0,0,.40);
+      position:relative;
+      min-height: 265px;
+    }
+    .cardImg{height: 108px; background-size: cover; background-position: center; filter: saturate(1.05);}
+    .cardBody{padding: 12px 14px 14px;}
+    .cardTop{display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom: 8px;}
+    .badge{display:flex; align-items:center; gap:8px; font-weight:900;}
+    .badgeIcon{
+      width:24px;height:24px;border-radius:8px;
+      background: rgba(184,233,75,.14);
+      border:1px solid rgba(184,233,75,.30);
+      display:grid; place-items:center;
+      color: var(--accent);
+      font-size: 13px;
+    }
+    .tagline{color: var(--muted2); font-weight:700; font-size:12px}
+    .cardTitle{font-weight:900; margin:2px 0 8px; font-size: 14px}
+    ul{margin:0; padding:0; list-style:none}
+    li{display:flex; gap:8px; align-items:flex-start; color: var(--muted); font-weight:650; font-size:12.5px; margin:6px 0;}
+    li::before{content:"•"; color: var(--accent); line-height:1; font-size:18px; margin-top:-2px}
+    .cardCta{margin-top: 10px;}
+    .footerStrip{
+      margin-top: 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.10);
+      padding: 10px 14px;
+      color: var(--muted2);
+      font-weight: 650;
+      text-align:center;
+    }
+    .adminHint{
+      position: fixed;
+      right: 16px; bottom: 16px;
+      display:flex; align-items:center; gap:10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(8px);
+      color: rgba(255,255,255,.78);
+      font-size: 12px;
     }
   </style>
 </head>
@@ -97,150 +153,122 @@
   <div class="wrap">
     <div class="nav">
       <div class="brand"><span class="dot"></span><span id="brandText">KAROSH GROUP</span></div>
-      <div class="navlinks">
+      <div class="navlinks" id="navlinks">
         <a href="#portfolio">Portfolio</a>
         <a href="#packages">Packages</a>
         <a href="#contact">Contact</a>
       </div>
-      <a class="btn" id="waBtn" href="#" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="btn btn-accent" href="#contact" id="contactBtn">Contact Us</a>
     </div>
 
-    <section class="hero" id="top">
+    <section class="hero" id="portfolio" aria-label="Hero">
       <div class="heroInner">
-        <h1 id="heroTitle"></h1>
-        <div class="sub" id="heroSub"></div>
+        <h1 id="heroTitle">Three creative brands under
+Karosh Group</h1>
+        <div class="sub" id="heroSubtitle">We deliver top-notch services for every need: family, events, and business.</div>
         <div class="ctaRow">
-          <a class="btn" href="#portfolio">See Our Work →</a>
-          <a class="btn ghost" href="#packages">View Packages</a>
-          <a class="btn ghost" id="waBtn2" href="#" target="_blank" rel="noopener">Book on WhatsApp</a>
-        </div>
-
-        <div class="cards" id="portfolio"></div>
-      </div>
-    </section>
-
-    <section class="section" id="packages">
-      <h2>Packages</h2>
-      <p class="lead">Our most popular services — tailored to your needs and budget. Prices are shown; message us for custom offers.</p>
-      <div class="pkgGrid" id="pkgGrid"></div>
-
-      <div class="hr"></div>
-      <div class="panel" style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
-        <div style="flex:1;min-width:260px">
-          <b>Coming soon:</b> <span style="color:var(--muted)">Karosh Event — Wedding decoration & full event planning.</span><br/>
-          <span class="small">Pre-booking available for upcoming dates.</span>
-        </div>
-        <a class="btn ghost" id="eventsBtn" href="#" target="_blank" rel="noopener">Ask about Events</a>
-      </div>
-    </section>
-
-    <section class="section" id="contact">
-      <h2 id="contactHeadline">Contact</h2>
-      <p class="lead" id="contactLead"></p>
-
-      <div class="contactBox">
-        <div class="panel">
-          <b>Book / Ask a question</b>
-          <div class="kv">
-            <div>📞 <b>WhatsApp:</b> <a id="waLink" href="#" target="_blank" rel="noopener"></a></div>
-            <div>📍 <b>Location:</b> <span id="city"></span></div>
-            <div class="small" id="hoursNote"></div>
-          </div>
-          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
-            <a class="btn" id="waBtn3" href="#" target="_blank" rel="noopener">Message on WhatsApp</a>
-            <a class="btn ghost" href="#top">Back to top</a>
-          </div>
-        </div>
-
-        <div class="panel">
-          <b>Instagram</b>
-          <div class="kv" id="igBox"></div>
-          <div class="hr"></div>
-          <div class="small">Edit everything from <b>/admin</b> (after CMS setup).</div>
+          <a class="btn btn-accent" id="primaryCta" href="#portfolio">See Our Work <span aria-hidden="true">›</span></a>
+          <a class="btn" href="#packages">View Packages</a>
+          <a class="btn" href="#contact">Book on WhatsApp</a>
         </div>
       </div>
+
+      <div class="cards" id="cards"></div>
     </section>
 
-    <footer>© <span id="year"></span> Karosh Group. All rights reserved.</footer>
+    <section class="footerStrip" id="packages">
+      <div style="font-size:18px; font-weight:950; color:#fff; margin-bottom:6px;">Packages</div>
+      Our most popular services — tailored to your needs and budget. Prices are shown:
+      <span style="color:#fff">message us for custom offers.</span>
+    </section>
+
+    <section class="footerStrip" id="contact" style="margin-top:12px;">
+      <div style="font-size:18px; font-weight:950; color:#fff; margin-bottom:6px;">Contact</div>
+      Email: <span style="color:#fff">karosh.group@gmail.com</span> · WhatsApp button can be connected later.
+    </section>
   </div>
 
-<script>
-async function loadContent(){
-  const res = await fetch('content/home.json', {cache:'no-store'});
-  const data = await res.json();
+  <div class="adminHint">
+    <span>Admin:</span>
+    <a class="btn" href="/admin/">/admin</a>
+  </div>
 
-  document.documentElement.style.setProperty('--hero-bg', `url('${data.hero.background_image}')`);
-  document.getElementById('brandText').textContent = data.site.brand;
-  document.getElementById('heroTitle').textContent = data.hero.title;
-  document.getElementById('heroSub').textContent = data.hero.subtitle;
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    // If coming from invite/reset email, open the modal automatically
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", function () {
+        if (window.location.hash.includes("recovery_token") || window.location.hash.includes("invite_token")) {
+          window.netlifyIdentity.open();
+        }
+      });
+      window.netlifyIdentity.init();
+    }
+  </script>
 
-  const wa = data.site.whatsapp_link;
-  document.getElementById('waBtn').href = wa;
-  document.getElementById('waBtn2').href = wa;
-  document.getElementById('waBtn3').href = wa;
-  document.getElementById('waLink').href = wa;
-  document.getElementById('waLink').textContent = data.site.whatsapp_number;
-  document.getElementById('eventsBtn').href = wa + '?text=' + encodeURIComponent('Hi Karosh Group, I want to pre-book Karosh Event (decoration & planning).');
+  <script>
+    async function loadContent(){
+      try{
+        const res = await fetch('/content/home.json', {cache:'no-store'});
+        const data = await res.json();
 
-  document.getElementById('city').textContent = data.site.city;
-  document.getElementById('contactHeadline').textContent = data.contact.headline;
-  document.getElementById('contactLead').textContent = data.contact.lead;
-  document.getElementById('hoursNote').textContent = data.contact.hours_note;
+        document.title = data.siteTitle || 'Karosh Group';
+        document.getElementById('brandText').textContent = (data.siteTitle || 'KAROSH GROUP').toUpperCase();
 
-  // Instagram box
-  const igBox = document.getElementById('igBox');
-  igBox.innerHTML = '';
-  const igItems = [
-    ['💍', 'Karosh Group', data.site.instagram.karosh_group],
-    ['🧸', 'Karosh Studio', data.site.instagram.karosh_studio],
-    ['📣', 'Karosh Agency', data.site.instagram.karosh_agency],
-  ];
-  igItems.forEach(([emoji,label,handle])=>{
-    const div = document.createElement('div');
-    div.innerHTML = `${emoji} <b>${label}:</b> <a href="https://instagram.com/${handle}" target="_blank" rel="noopener">@${handle}</a>`;
-    igBox.appendChild(div);
-  });
+        const hero = document.querySelector('.hero');
+        if (data.heroBackground) {
+          hero.style.backgroundImage =
+            'linear-gradient(180deg, rgba(0,0,0,.40), rgba(0,0,0,.72)), url("' + data.heroBackground + '")';
+        }
+        if (data.accentColor) {
+          document.documentElement.style.setProperty('--accent', data.accentColor);
+        }
 
-  // Brand cards
-  const cards = document.getElementById('portfolio');
-  cards.innerHTML = '';
-  data.brands.forEach(b=>{
-    const art = document.createElement('article');
-    art.className = 'card';
-    const ig = b.instagram ? `<a class="btn ghost" href="https://instagram.com/${b.instagram}" target="_blank" rel="noopener">Instagram: @${b.instagram}</a>` : `<span class="small">Instagram coming soon</span>`;
-    art.innerHTML = `
-      <div class="cardTop" style="background-image:linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.72)), url('${b.image}');"></div>
-      <div class="cardBody">
-        <div class="cardTitle">${b.icon} ${b.name} <span class="tag">${b.tag}</span></div>
-        <div class="cardSub">${b.subtitle}</div>
-        <ul class="bullets">${b.bullets.map(x=>`<li>${x}</li>`).join('')}</ul>
-        ${ig}
-      </div>`;
-    cards.appendChild(art);
-  });
+        document.getElementById('heroTitle').textContent = data.heroTitle || '';
+        document.getElementById('heroSubtitle').textContent = data.heroSubtitle || '';
 
-  // Packages
-  const pkgGrid = document.getElementById('pkgGrid');
-  pkgGrid.innerHTML = '';
-  data.packages.forEach(p=>{
-    const text = encodeURIComponent(p.whatsapp_text || `Hi Karosh Group, I want the ${p.name} package.`);
-    const book = wa + '?text=' + text;
-    const div = document.createElement('div');
-    div.className='pkg';
-    div.innerHTML = `
-      <div class="pkgImg" style="background-image:linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.78)), url('${p.image}');"></div>
-      <div class="pkgBody">
-        <div class="pkgTitle"><span>${p.name}</span><span class="price">${p.price}</span></div>
-        <div class="pkgMeta">${p.details.map(d=>`• ${d}`).join('<br/>')}</div>
-      </div>
-      <div class="pkgFooter"><a class="btn ghost" href="${book}" target="_blank" rel="noopener">Book</a></div>
-    `;
-    pkgGrid.appendChild(div);
-  });
+        const primary = document.getElementById('primaryCta');
+        primary.textContent = (data.primaryCtaText || 'See Our Work') + ' ›';
+        primary.href = data.primaryCtaHref || '#portfolio';
 
-  document.getElementById('year').textContent = new Date().getFullYear();
-}
-loadContent();
-</script>
+        const navlinks = document.getElementById('navlinks');
+        if (Array.isArray(data.nav) && data.nav.length === 3) {
+          navlinks.innerHTML = `
+            <a href="#portfolio">${data.nav[0]}</a>
+            <a href="#packages">${data.nav[1]}</a>
+            <a href="#contact">${data.nav[2]}</a>
+          `;
+        }
+
+        const cards = document.getElementById('cards');
+        cards.innerHTML = '';
+        (data.cards || []).forEach((c, idx) => {
+          const icon = ['🐻','💍','⚠','🎉'][idx] || '•';
+          const el = document.createElement('article');
+          el.className = 'card';
+          el.innerHTML = `
+            <div class="cardImg" style="background-image:url('${c.image || ''}')"></div>
+            <div class="cardBody">
+              <div class="cardTop">
+                <div class="badge"><span class="badgeIcon">${icon}</span> <span>${c.badge || ''}</span></div>
+                <div class="tagline">${c.tagline || ''}</div>
+              </div>
+              <div class="cardTitle">${c.title || ''}</div>
+              <ul>
+                ${(c.bullets || []).slice(0,3).map(b => `<li>${b}</li>`).join('')}
+              </ul>
+              <div class="cardCta">
+                <a class="btn btn-accent" href="#packages">${c.cta || 'Learn More'} <span aria-hidden="true">›</span></a>
+              </div>
+            </div>
+          `;
+          cards.appendChild(el);
+        });
+      } catch(e){
+        console.warn('Content load failed:', e);
+      }
+    }
+    loadContent();
+  </script>
 </body>
 </html>
