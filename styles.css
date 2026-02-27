@@ -258,3 +258,64 @@ h1{
   .pkg-grid{grid-template-columns: 1fr;}
   .hero-inner{padding-top: 78px}
 }
+/* ===== Main Grid (8 sections) ===== */
+.main-grid{
+  display:grid;
+  gap:14px;
+  padding:18px;
+  grid-template-columns:repeat(4, 1fr);
+  grid-auto-rows:160px;
+}
+
+.tile{
+  position:relative;
+  border-radius:16px;
+  overflow:hidden;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  text-decoration:none;
+  color:#fff;
+  background:#111;
+}
+
+.tile h3{
+  margin:0;
+  font-size:20px;
+}
+
+.tile p{
+  margin:4px 0 0;
+  opacity:.9;
+  font-size:14px;
+}
+
+/* Wedding BIG */
+.wedding{
+  grid-column:1 / span 2;
+  grid-row:1 / span 2;
+}
+
+/* Agency full width */
+.agency{
+  grid-column:1 / -1;
+}
+
+/* Mobile */
+@media (max-width:768px){
+  .main-grid{
+    grid-template-columns:1fr;
+    grid-auto-rows:auto;
+  }
+
+  .wedding,
+  .agency{
+    grid-column:auto;
+    grid-row:auto;
+  }
+
+  .tile{
+    min-height:150px;
+  }
+}
