@@ -3,100 +3,159 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Karosh Group — Choose Language</title>
-  <meta name="description" content="Choose your language — Karosh Group official website." />
+  <title>Karosh Group</title>
+  <meta name="description" content="Choose your language | Karosh Group" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
+  <!-- Use your main stylesheet -->
   <link rel="stylesheet" href="styles.css" />
 
+  <!-- Landing-only styles -->
   <style>
-    .chooser-wrap{
-      min-height: 100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 90px 16px 40px;
+    .lang-landing{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:40px 16px;
       position:relative;
     }
-    .chooser-card{
+
+    .lang-card{
       width:min(520px, 100%);
-      background: rgba(15,15,20,.75);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 24px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-      padding: 28px;
       text-align:center;
+      background:rgba(15,15,20,.85);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:22px;
+      padding:28px 22px;
+      backdrop-filter:blur(10px);
+      box-shadow: 0 18px 50px rgba(0,0,0,.45);
     }
-    .chooser-brand{
+
+    .lang-brand{
       display:flex;
       align-items:center;
       justify-content:center;
-      gap:12px;
-      margin-bottom: 14px;
+      gap:10px;
+      margin-bottom:14px;
+      letter-spacing:.08em;
+      font-weight:800;
+      font-size:14px;
     }
-    .chooser-title{
-      font-size: 40px;
-      margin: 0 0 6px;
-      letter-spacing:-.02em;
+    .lang-dot{
+      width:10px;height:10px;border-radius:50%;
+      background:var(--accent);
     }
-    .chooser-sub{
-      margin: 0 0 18px;
-      color: rgba(255,255,255,.70);
+    .lang-brand .muted{opacity:.6;font-weight:700}
+
+    .lang-title{
+      margin:0 0 10px;
+      font-size: clamp(30px, 6vw, 44px);
+      line-height:1.05;
+      font-weight:800;
     }
+
+    .lang-sub{
+      margin:0;
+      color: rgba(255,255,255,.75);
+      font-weight:600;
+      line-height:1.8;
+      font-size:15px;
+    }
+
+    .lang-buttons{
+      margin-top:20px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
     .lang-btn{
-      display:block;
-      width:100%;
-      padding: 16px 18px;
-      margin-top: 14px;
-      border-radius: 18px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      padding:18px 18px;
+      border-radius:18px;
       background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.10);
-      font-weight: 800;
-      font-size: 20px;
-      color: rgba(255,255,255,.92);
-      transition: .2s ease;
+      transition: .25s ease;
+      text-decoration:none;
     }
     .lang-btn:hover{
-      border-color: rgba(185,216,76,.40);
-      background: rgba(185,216,76,.08);
-      color: #fff;
+      transform: translateY(-1px);
+      border-color: rgba(185,216,76,.35);
+      background: rgba(185,216,76,.07);
     }
-    .lang-btn small{
+
+    .lang-btn .main{
+      font-size:22px;
+      font-weight:800;
+      color: rgba(255,255,255,.95);
+    }
+    .lang-btn .subline{
+      font-size:14px;
       font-weight:700;
-      opacity:.75;
-      font-size: 16px;
+      color: rgba(255,255,255,.70);
+    }
+
+    /* Make Kurdish feel special */
+    .lang-btn.kurdish .subline{
+      color: rgba(185,216,76,.95);
+      letter-spacing:.02em;
+    }
+
+    /* Small note under buttons (optional) */
+    .lang-note{
+      margin-top:16px;
+      font-size:12px;
+      color: rgba(255,255,255,.55);
     }
   </style>
 </head>
 
 <body>
-  <div class="chooser-wrap">
-    <div class="chooser-card">
-      <div class="chooser-brand">
-        <span class="dot"></span>
-        <span class="brand-text">KAROSH <span class="muted">GROUP</span></span>
+  <main class="lang-landing">
+    <div class="lang-card">
+
+      <div class="lang-brand">
+        <span class="lang-dot"></span>
+        <span>KAROSH <span class="muted">GROUP</span></span>
       </div>
 
-      <h1 class="chooser-title">Choose Your Language</h1>
-      <p class="chooser-sub">اختر اللغة المناسبة لك</p>
+      <h1 class="lang-title">Choose Your Language</h1>
 
-      <!-- Kurdish first -->
-      <a class="lang-btn" href="/ku/">
-        Kurdish <small>(کوردی)</small>
-      </a>
+      <!-- Option 3 (3 lines) - Kurdish first -->
+      <p class="lang-sub">
+        زمانەکەت هەڵبژێرە<br>
+        اختر لغتك المناسبة لك<br>
+        Choose your language
+      </p>
 
-      <a class="lang-btn" href="/ar/">
-        Arabic <small>(العربية)</small>
-      </a>
+      <div class="lang-buttons">
+        <!-- Kurdish FIRST + Flag line -->
+        <a class="lang-btn kurdish" href="/ku/">
+          <span class="main">Kurdish (کوردی)</span>
+          <span class="subline">🟢 ⚪ 🔴 ☀️</span>
+        </a>
 
-      <a class="lang-btn" href="/en/">
-        English
-      </a>
+        <a class="lang-btn" href="/ar/">
+          <span class="main">Arabic (العربية)</span>
+          <span class="subline">اختر العربية</span>
+        </a>
+
+        <a class="lang-btn" href="/en/">
+          <span class="main">English</span>
+          <span class="subline">Choose English</span>
+        </a>
+      </div>
+
+      <div class="lang-note">
+        You can change language anytime from inside the site.
+      </div>
+
     </div>
-  </div>
+  </main>
 </body>
-</html></html>
+</html>
