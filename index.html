@@ -3,90 +3,100 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Karosh Group</title>
-  <meta name="description" content="Official website of Karosh Group." />
+  <title>Karosh Group — Choose Language</title>
+  <meta name="description" content="Choose your language — Karosh Group official website." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="styles.css" />
 
   <style>
-    .lang-landing{
-      min-height:100vh;
-      display:grid;
-      place-items:center;
-      padding:40px 16px;
-    }
-
-    .lang-card{
-      width:min(420px, 100%);
-      text-align:center;
-      background:rgba(15,15,20,.85);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:18px;
-      padding:28px;
-      backdrop-filter:blur(10px);
-      box-shadow: 0 18px 50px rgba(0,0,0,.45);
-    }
-
-    .lang-title{
-      margin:0 0 8px;
-      font-weight:800;
-      font-size:24px;
-    }
-
-    .lang-sub{
-      margin:0 0 22px;
-      color:rgba(255,255,255,.7);
-      font-size:14px;
-    }
-
-    .lang-list{
+    .chooser-wrap{
+      min-height: 100vh;
       display:flex;
-      flex-direction:column;
-      gap:14px;
+      align-items:center;
+      justify-content:center;
+      padding: 90px 16px 40px;
+      position:relative;
     }
-
+    .chooser-card{
+      width:min(520px, 100%);
+      background: rgba(15,15,20,.75);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 28px;
+      text-align:center;
+    }
+    .chooser-brand{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      margin-bottom: 14px;
+    }
+    .chooser-title{
+      font-size: 40px;
+      margin: 0 0 6px;
+      letter-spacing:-.02em;
+    }
+    .chooser-sub{
+      margin: 0 0 18px;
+      color: rgba(255,255,255,.70);
+    }
     .lang-btn{
       display:block;
-      padding:16px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
-      font-weight:700;
-      font-size:16px;
-      transition:.3s ease;
+      width:100%;
+      padding: 16px 18px;
+      margin-top: 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      font-weight: 800;
+      font-size: 20px;
+      color: rgba(255,255,255,.92);
+      transition: .2s ease;
     }
-
     .lang-btn:hover{
-      border-color:rgba(185,216,76,.35);
-      color:var(--accent);
+      border-color: rgba(185,216,76,.40);
+      background: rgba(185,216,76,.08);
+      color: #fff;
+    }
+    .lang-btn small{
+      font-weight:700;
+      opacity:.75;
+      font-size: 16px;
     }
   </style>
 </head>
 
 <body>
-
-  <div class="lang-landing">
-    <div class="lang-card">
-
-      <div class="brand" style="justify-content:center; margin-bottom:14px">
+  <div class="chooser-wrap">
+    <div class="chooser-card">
+      <div class="chooser-brand">
         <span class="dot"></span>
         <span class="brand-text">KAROSH <span class="muted">GROUP</span></span>
       </div>
 
-      <h1 class="lang-title">Choose Your Language</h1>
-      <p class="lang-sub">اختر اللغة المناسبة لك</p>
+      <h1 class="chooser-title">Choose Your Language</h1>
+      <p class="chooser-sub">اختر اللغة المناسبة لك</p>
 
-      <div class="lang-list">
-        <a class="lang-btn" href="/ku/">Kurdish (کوردی)</a>
-        <a class="lang-btn" href="/ar/">Arabic (العربية)</a>
-        <a class="lang-btn" href="/en/">English</a>
-      </div>
+      <!-- Kurdish first -->
+      <a class="lang-btn" href="/ku/">
+        Kurdish <small>(کوردی)</small>
+      </a>
 
+      <a class="lang-btn" href="/ar/">
+        Arabic <small>(العربية)</small>
+      </a>
+
+      <a class="lang-btn" href="/en/">
+        English
+      </a>
     </div>
   </div>
-
 </body>
-</html>
+</html></html>
