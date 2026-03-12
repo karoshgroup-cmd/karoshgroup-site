@@ -3,51 +3,28 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Wedding Album - Karosh Group</title>
+<title>Wedding Photos - Karosh Group</title>
 <link rel="stylesheet" href="../styles.css" />
 <style>
-.gallery {
-  padding:120px 16px 60px;
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-  gap:16px;
-}
-.gallery img {
-  width:100%;
-  height:300px;
-  object-fit:cover;
-  border-radius:16px;
-  cursor:pointer;
-  transition:.3s ease;
-  display:block;
-}
-.gallery img:hover {
-  transform:scale(1.03);
-  box-shadow:0 12px 40px rgba(0,0,0,.5);
-}
-.page-title {
-  text-align:center;
-  padding:110px 16px 0;
-  font-size:28px;
-  font-weight:800;
-  letter-spacing:.04em;
-}
-.more-soon {
-  text-align:center;
-  padding:40px 16px 60px;
-  color:rgba(255,255,255,.4);
-  font-size:14px;
-}
+.gallery{padding:120px 16px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.gallery img{width:100%;height:300px;object-fit:cover;border-radius:16px;cursor:pointer;transition:.3s ease;display:block;}
+.gallery img:hover{transform:scale(1.03);box-shadow:0 12px 40px rgba(0,0,0,.6);}
+.page-title{text-align:center;padding:110px 16px 0;font-size:28px;font-weight:800;letter-spacing:.04em;}
+.more-soon{text-align:center;padding:40px 16px 60px;color:rgba(255,255,255,.4);font-size:14px;}
+
+/* Lightbox */
+.lb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out;}
+.lb-overlay.active{display:flex;}
+.lb-overlay img{max-width:95vw;max-height:95vh;object-fit:contain;border-radius:10px;box-shadow:0 0 60px rgba(0,0,0,.8);}
+.lb-close{position:fixed;top:20px;right:28px;font-size:38px;color:#fff;cursor:pointer;line-height:1;opacity:.8;transition:.2s;}
+.lb-close:hover{opacity:1;}
 </style>
 </head>
 <body>
 
 <header class="topbar">
   <div class="wrap nav">
-    <div class="brand">
-      <span class="dot"></span>
-      <span class="brand-text">KAROSH <span class="muted">GROUP</span></span>
-    </div>
+    <div class="brand"><span class="dot"></span><span class="brand-text">KAROSH <span class="muted">GROUP</span></span></div>
     <a class="pill" href="javascript:history.back()">Back</a>
   </div>
 </header>
@@ -59,6 +36,28 @@
 </div>
 
 <p class="more-soon">More photos coming soon</p>
+
+<!-- Lightbox -->
+<div class="lb-overlay" id="lb" onclick="closeLb()">
+  <span class="lb-close" onclick="closeLb()">&#x2715;</span>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<script>
+function openLb(src){
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lb').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeLb(){
+  document.getElementById('lb').classList.remove('active');
+  document.body.style.overflow='';
+}
+document.querySelectorAll('.gallery img').forEach(img=>{
+  img.onclick = () => openLb(img.src);
+});
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLb(); });
+</script>
 
 </body>
 </html>
