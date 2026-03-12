@@ -7,17 +7,50 @@
 <link rel="stylesheet" href="../styles.css" />
 <style>
 .gallery{padding:120px 16px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
-.gallery img{width:100%;height:300px;object-fit:cover;border-radius:16px;cursor:pointer;transition:.3s ease;display:block;}
-.gallery img:hover{transform:scale(1.03);box-shadow:0 12px 40px rgba(0,0,0,.6);}
+.gallery img{width:100%;height:300px;object-fit:cover;border-radius:16px;cursor:pointer;transition:transform .4s ease, box-shadow .4s ease, opacity .4s ease;display:block;}
+.gallery img:hover{transform:scale(1.04);box-shadow:0 20px 60px rgba(0,0,0,.7);opacity:.92;}
 .page-title{text-align:center;padding:110px 16px 0;font-size:28px;font-weight:800;letter-spacing:.04em;}
 .more-soon{text-align:center;padding:40px 16px 60px;color:rgba(255,255,255,.4);font-size:14px;}
 
 /* Lightbox */
-.lb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out;}
-.lb-overlay.active{display:flex;}
-.lb-overlay img{max-width:95vw;max-height:95vh;object-fit:contain;border-radius:10px;box-shadow:0 0 60px rgba(0,0,0,.8);}
-.lb-close{position:fixed;top:20px;right:28px;font-size:38px;color:#fff;cursor:pointer;line-height:1;opacity:.8;transition:.2s;}
-.lb-close:hover{opacity:1;}
+.lb-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0);
+  z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  cursor:zoom-out;
+  pointer-events:none;
+  transition:background .5s ease;
+}
+.lb-overlay.active{
+  background:rgba(0,0,0,.95);
+  pointer-events:all;
+}
+.lb-overlay img{
+  max-width:92vw;max-height:90vh;
+  object-fit:contain;
+  border-radius:6px;
+  opacity:0;
+  transform:scale(.88);
+  transition:opacity .45s ease, transform .45s cubic-bezier(.16,1,.3,1);
+  box-shadow:0 30px 100px rgba(0,0,0,.8);
+  pointer-events:none;
+}
+.lb-overlay.active img{
+  opacity:1;
+  transform:scale(1);
+}
+.lb-close{
+  position:fixed;top:22px;right:30px;
+  font-size:32px;color:#fff;
+  cursor:pointer;
+  opacity:0;
+  transition:opacity .4s ease .2s, transform .3s ease;
+  line-height:1;
+  pointer-events:none;
+}
+.lb-overlay.active .lb-close{opacity:.7;pointer-events:all;}
+.lb-close:hover{opacity:1;transform:rotate(90deg);}
 </style>
 </head>
 <body>
@@ -37,26 +70,33 @@
 
 <p class="more-soon">More photos coming soon</p>
 
-<!-- Lightbox -->
-<div class="lb-overlay" id="lb" onclick="closeLb()">
-  <span class="lb-close" onclick="closeLb()">&#x2715;</span>
+<div class="lb-overlay" id="lb">
+  <span class="lb-close" id="lb-close">&#x2715;</span>
   <img id="lb-img" src="" alt="">
 </div>
 
 <script>
-function openLb(src){
-  document.getElementById('lb-img').src = src;
-  document.getElementById('lb').classList.add('active');
-  document.body.style.overflow='hidden';
+const lb = document.getElementById('lb');
+const lbImg = document.getElementById('lb-img');
+const lbClose = document.getElementById('lb-close');
+
+function openLb(src) {
+  lbImg.src = src;
+  requestAnimationFrame(() => {
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
 }
-function closeLb(){
-  document.getElementById('lb').classList.remove('active');
-  document.body.style.overflow='';
+function closeLb() {
+  lb.classList.remove('active');
+  document.body.style.overflow = '';
 }
-document.querySelectorAll('.gallery img').forEach(img=>{
-  img.onclick = () => openLb(img.src);
+
+document.querySelectorAll('.gallery img').forEach(img => {
+  img.addEventListener('click', () => openLb(img.src));
 });
-document.addEventListener('keydown', e => { if(e.key==='Escape') closeLb(); });
+lb.addEventListener('click', e => { if (e.target === lb || e.target === lbClose) closeLb(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
 </script>
 
 </body>
