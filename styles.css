@@ -297,9 +297,10 @@ h1{
   grid-row:1 / span 2;
 }
 
-/* Agency full width */
+/* Agency BIG - matches Wedding size */
 .agency{
-  grid-column:1 / -1;
+  grid-column:3 / span 2;
+  grid-row:1 / span 2;
 }
 
 /* Mobile */
