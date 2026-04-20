@@ -58,6 +58,53 @@ title: images/uploads/dsc03496.jpg outdore
     letter-spacing:.02em;
   }
   </style>
+
+  <style id="social-bar-css">
+  .social-bar{
+    background:#0d0d0d;
+    border-bottom:1px solid rgba(255,255,255,.07);
+    padding:7px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+  .soc-link{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:12px;font-weight:600;
+    text-decoration:none;
+    padding:4px 10px;
+    border-radius:30px;
+    transition:.2s ease;
+    white-space:nowrap;
+  }
+  .loc-link{
+    color:#f5c842;
+    background:rgba(212,160,23,.1);
+    border:1px solid rgba(212,160,23,.25);
+  }
+  .loc-link:hover{background:rgba(212,160,23,.2);}
+  .ig-link{
+    color:rgba(255,255,255,.75);
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .ig-link:hover{
+    color:#fff;
+    background:rgba(193,53,132,.18);
+    border-color:rgba(193,53,132,.35);
+  }
+  .soc-sep{
+    width:1px;height:14px;
+    background:rgba(255,255,255,.12);
+    margin:0 4px;
+  }
+  @media(max-width:480px){
+    .social-bar{gap:5px;}
+    .soc-link{font-size:11px;padding:3px 8px;}
+  }
+  </style>
 </head>
 
 <body>
