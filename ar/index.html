@@ -303,5 +303,19 @@ title: images/uploads/dsc03496.jpg outdore
     tick(); setInterval(tick, 1000);
   })();
   </script>
+
+  <script id="ig-deeplink">
+  function openIG(username) {
+    var appUrl = 'instagram://user?username=' + username;
+    var webUrl = 'https://www.instagram.com/' + username + '/';
+    var t = Date.now();
+    setTimeout(function() {
+      if (Date.now() - t < 1500) {
+        window.open(webUrl, '_blank');
+      }
+    }, 500);
+    window.location.href = appUrl;
+  }
+  </script>
 </body>
 </html>
