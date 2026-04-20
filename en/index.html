@@ -61,9 +61,9 @@ title: images/uploads/dsc03496.jpg outdore
 
   <style id="social-bar-css">
   .social-bar{
-    background:#0d0d0d;
-    border-bottom:1px solid rgba(255,255,255,.07);
-    padding:7px 16px;
+    background:rgba(0,0,0,.6);
+    border-top:1px solid rgba(255,255,255,.07);
+    padding:6px 16px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -115,6 +115,30 @@ title: images/uploads/dsc03496.jpg outdore
     .social-bar{gap:5px;}
     .soc-link{font-size:11px;padding:3px 8px;}
   }
+  .domain-ig{
+    display:inline-flex;align-items:center;gap:8px;
+    color:#fff;
+    text-decoration:none;
+    font-size:13px;font-weight:600;
+    padding:10px 18px;
+    border-radius:14px;
+    border:2px solid transparent;
+    background-image:linear-gradient(#1a1a1a,#1a1a1a),linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7,#405de6);
+    background-origin:border-box;
+    background-clip:padding-box,border-box;
+    transition:.25s ease;
+    cursor:pointer;
+  }
+  .domain-ig svg{width:20px;height:20px;fill:url(#ig-grad);flex-shrink:0;}
+  .domain-ig:hover{
+    background-image:linear-gradient(rgba(238,42,123,.2),rgba(238,42,123,.2)),linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7,#405de6);
+    background-origin:border-box;
+    background-clip:padding-box,border-box;
+    transform:translateY(-2px);
+    box-shadow:0 6px 24px rgba(238,42,123,.3);
+  }
+  .domains{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:20px;}
+  .hero{padding-top:130px;}
   </style>
 </head>
 
@@ -150,7 +174,6 @@ title: images/uploads/dsc03496.jpg outdore
 
       <a class="pill" href="#contact">Contact Us</a>
     </div>
-  </header>
   <!-- SOCIAL + LOCATION BAR -->
   <div class="social-bar">
     <a class="soc-link loc-link" href="https://maps.app.goo.gl/hng1kdrHnmD2yRBX6" target="_blank" rel="noopener">
@@ -171,6 +194,7 @@ title: images/uploads/dsc03496.jpg outdore
       karosh.agency
     </a>
   </div>
+  </header>
 
   <main>
     <section class="hero" aria-label="Hero">
