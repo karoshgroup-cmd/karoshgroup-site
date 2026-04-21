@@ -6,11 +6,11 @@
 <title>Wedding Photos - Karosh Group</title>
 <link rel="stylesheet" href="../styles.css" />
 <style>
-.gallery{padding:120px 16px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.gallery{padding:120px 16px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
 .gallery img{width:100%;height:300px;object-fit:cover;border-radius:16px;cursor:pointer;transition:transform .4s ease, box-shadow .4s ease, opacity .4s ease;display:block;}
 .gallery img:hover{transform:scale(1.04);box-shadow:0 20px 60px rgba(0,0,0,.7);opacity:.92;}
 .page-title{text-align:center;padding:110px 16px 0;font-size:28px;font-weight:800;letter-spacing:.04em;}
-.more-soon{text-align:center;padding:40px 16px 60px;color:rgba(255,255,255,.4);font-size:14px;}
+.more-soon{text-align:center;padding:20px 16px 0;color:rgba(255,255,255,.4);font-size:14px;}
 
 /* Lightbox */
 .lb-overlay{
@@ -51,6 +51,83 @@
 }
 .lb-overlay.active .lb-close{opacity:.7;pointer-events:all;}
 .lb-close:hover{opacity:1;transform:rotate(90deg);}
+
+/* ── Packages ── */
+.pkg-section{
+  padding:40px 16px 60px;
+  max-width:800px;
+  margin:0 auto;
+}
+.pkg-section-title{
+  text-align:center;
+  font-size:22px;
+  font-weight:800;
+  margin:0 0 6px;
+  color:#fff;
+}
+.pkg-section-sub{
+  text-align:center;
+  font-size:13px;
+  color:rgba(255,255,255,.5);
+  margin:0 0 28px;
+}
+.pkg-lang-toggle{
+  display:flex;gap:8px;justify-content:center;margin-bottom:24px;
+}
+.lang-btn{
+  padding:7px 20px;border-radius:30px;border:1px solid rgba(255,255,255,.2);
+  background:transparent;color:rgba(255,255,255,.6);font-size:13px;font-weight:600;
+  cursor:pointer;transition:.2s;
+}
+.lang-btn.active{background:#fff;color:#000;}
+.pkg-cards{display:flex;flex-direction:column;gap:16px;}
+.pkg-card{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:18px;
+  padding:20px 20px 18px;
+  position:relative;
+  overflow:hidden;
+}
+.pkg-card.vip{
+  border-color:rgba(212,175,55,.5);
+  background:linear-gradient(135deg,rgba(212,175,55,.08),rgba(0,0,0,.4));
+}
+.pkg-badge{
+  display:inline-block;
+  background:linear-gradient(90deg,#d4af37,#f5e27a);
+  color:#000;font-size:11px;font-weight:800;
+  padding:3px 10px;border-radius:20px;margin-bottom:10px;
+  letter-spacing:.05em;
+}
+.pkg-card-title{font-size:17px;font-weight:800;margin:0 0 10px;color:#fff;}
+.pkg-bullets-list{list-style:none;padding:0;margin:0 0 14px;}
+.pkg-bullets-list li{
+  font-size:13px;color:rgba(255,255,255,.8);
+  padding:4px 0;
+  display:flex;align-items:flex-start;gap:6px;
+}
+.pkg-bullets-list li::before{content:"•";color:#d4af37;font-weight:900;}
+.pkg-price-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.pkg-old-price{
+  font-size:13px;color:rgba(255,255,255,.35);
+  text-decoration:line-through;
+}
+.pkg-new-price{
+  font-size:22px;font-weight:900;color:#d4af37;
+}
+.pkg-discount{
+  background:rgba(255,80,80,.15);
+  color:#ff6b6b;
+  border:1px solid rgba(255,80,80,.3);
+  border-radius:20px;
+  font-size:11px;font-weight:800;
+  padding:2px 9px;
+}
+.lang-content{display:none;}
+.lang-content.active{display:block;}
+/* RTL for Kurdish */
+.rtl-text{direction:rtl;text-align:right;}
 </style>
 </head>
 <body>
@@ -69,6 +146,126 @@
 </div>
 
 <p class="more-soon">More photos coming soon</p>
+
+<!-- ── WEDDING PACKAGES ── -->
+<div class="pkg-section">
+  <p class="pkg-section-title">📸 Exclusive Wedding Packages</p>
+  <p class="pkg-section-sub">Special discount offers for brides and grooms</p>
+
+  <div class="pkg-lang-toggle">
+    <button class="lang-btn active" onclick="switchLang('en')">English</button>
+    <button class="lang-btn" onclick="switchLang('ku')">کوردی</button>
+  </div>
+
+  <!-- English -->
+  <div class="lang-content active" id="lang-en">
+    <div class="pkg-cards">
+
+      <div class="pkg-card">
+        <span class="pkg-badge">OFFER 1</span>
+        <div class="pkg-card-title">Essential Memories</div>
+        <ul class="pkg-bullets-list">
+          <li>10-Photo Premium Album</li>
+          <li>Professional Cinematic Video Clip</li>
+        </ul>
+        <div class="pkg-price-row">
+          <span class="pkg-old-price">$300</span>
+          <span class="pkg-new-price">$250</span>
+          <span class="pkg-discount">30% OFF</span>
+        </div>
+      </div>
+
+      <div class="pkg-card">
+        <span class="pkg-badge">OFFER 2</span>
+        <div class="pkg-card-title">Complete Celebration</div>
+        <ul class="pkg-bullets-list">
+          <li>10-Photo Premium Album</li>
+          <li>Professional Cinematic Video Clip</li>
+          <li>Full Event Photography (High-res on USB)</li>
+          <li>Full Event Video Coverage</li>
+        </ul>
+        <div class="pkg-price-row">
+          <span class="pkg-old-price">$615</span>
+          <span class="pkg-new-price">$500</span>
+          <span class="pkg-discount">35% OFF</span>
+        </div>
+      </div>
+
+      <div class="pkg-card vip">
+        <span class="pkg-badge">OFFER 3 — VIP</span>
+        <div class="pkg-card-title">The VIP Experience</div>
+        <ul class="pkg-bullets-list">
+          <li>Luxury 20-Photo Album</li>
+          <li>VIP Cinematic Video Clip</li>
+          <li>Family Portraits (Printed &amp; Digital on USB)</li>
+          <li>Full Event Video Coverage</li>
+          <li>Fly Cam (Drone) Aerial Cinematography</li>
+        </ul>
+        <div class="pkg-price-row">
+          <span class="pkg-old-price">$1,415</span>
+          <span class="pkg-new-price">$950</span>
+          <span class="pkg-discount">40% OFF</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Kurdish -->
+  <div class="lang-content rtl-text" id="lang-ku">
+    <div class="pkg-cards">
+
+      <div class="pkg-card">
+        <span class="pkg-badge">ئۆفەری یەکەم</span>
+        <div class="pkg-card-title">یادگارییە سەرەتاییەکان</div>
+        <ul class="pkg-bullets-list">
+          <li>ئەلبومی ١٠ وێنەیی</li>
+          <li>ڤیدیۆ کلیپێکی سینەمایی</li>
+        </ul>
+        <div class="pkg-price-row" style="justify-content:flex-end;">
+          <span class="pkg-old-price">$300</span>
+          <span class="pkg-new-price">$250</span>
+          <span class="pkg-discount">٣٠٪ داشکان</span>
+        </div>
+      </div>
+
+      <div class="pkg-card">
+        <span class="pkg-badge">ئۆفەری دووەم</span>
+        <div class="pkg-card-title">ئۆفەری گشتگیر</div>
+        <ul class="pkg-bullets-list">
+          <li>ئەلبومی ١٠ وێنەیی</li>
+          <li>ڤیدیۆ کلیپێکی پرۆفیشناڵ</li>
+          <li>وێنەکانی ناو ئاهەنگ (لەسەر فلاش میمۆری)</li>
+          <li>ڤیدیۆی ناو ئاهەنگ بە تەواوی</li>
+        </ul>
+        <div class="pkg-price-row" style="justify-content:flex-end;">
+          <span class="pkg-old-price">$615</span>
+          <span class="pkg-new-price">$500</span>
+          <span class="pkg-discount">٣٥٪ داشکان</span>
+        </div>
+      </div>
+
+      <div class="pkg-card vip">
+        <span class="pkg-badge">ئۆفەری سێیەم — VIP</span>
+        <div class="pkg-card-title">خزمەتگوزاری VIP</div>
+        <ul class="pkg-bullets-list">
+          <li>ئەلبومی ٢٠ وێنەیی نایاب</li>
+          <li>ڤیدیۆ کلیپی VIP</li>
+          <li>وێنەی خێزانی (بە چاپکراوی و لەسەر فلاش میمۆری)</li>
+          <li>ڤیدیۆی ناو ئاهەنگ بە تەواوی</li>
+          <li>بەکارهێنانی فلای کام (درۆن)</li>
+        </ul>
+        <div class="pkg-price-row" style="justify-content:flex-end;">
+          <span class="pkg-old-price">$1,415</span>
+          <span class="pkg-new-price">$950</span>
+          <span class="pkg-discount">٤٠٪ داشکان</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- ── /WEDDING PACKAGES ── -->
 
 <div class="lb-overlay" id="lb">
   <span class="lb-close" id="lb-close">&#x2715;</span>
@@ -97,6 +294,13 @@ document.querySelectorAll('.gallery img').forEach(img => {
 });
 lb.addEventListener('click', e => { if (e.target === lb || e.target === lbClose) closeLb(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+
+function switchLang(lang) {
+  document.querySelectorAll('.lang-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('lang-' + lang).classList.add('active');
+  event.target.classList.add('active');
+}
 </script>
 
 </body>

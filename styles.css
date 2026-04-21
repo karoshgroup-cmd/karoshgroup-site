@@ -348,15 +348,15 @@ h1{
 
 /* ===== Main Section Tiles (Outdoor / Studio / Agency) ===== */
 .outdoor-section{
-  background:url('images/uploads/wedding.jpg') center/cover no-repeat;
+  background:url('images/uploads/section-outdoor.jpeg') center/cover no-repeat;
   min-height:220px;
 }
 .studio-section{
-  background:url('images/uploads/newborn.jpeg') center/cover no-repeat;
+  background:url('images/uploads/section-studio.jpeg') center/cover no-repeat;
   min-height:220px;
 }
 .agency-section{
-  background:url('images/uploads/agency.png') center/cover no-repeat;
+  background:url('images/uploads/section-agency.png') center/cover no-repeat;
   min-height:220px;
 }
 .section-main-grid{
