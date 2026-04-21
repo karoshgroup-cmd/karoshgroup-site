@@ -153,8 +153,9 @@
   <p class="pkg-section-sub">Special discount offers for brides and grooms</p>
 
   <div class="pkg-lang-toggle">
-    <button class="lang-btn active" onclick="switchLang('en')">English</button>
-    <button class="lang-btn" onclick="switchLang('ku')">کوردی</button>
+    <button class="lang-btn active" onclick="switchLang('en',this)">English</button>
+    <button class="lang-btn" onclick="switchLang('ar',this)">العربية</button>
+    <button class="lang-btn" onclick="switchLang('ku',this)">کوردی</button>
   </div>
 
   <!-- English -->
@@ -264,6 +265,60 @@
 
     </div>
   </div>
+
+  <!-- Arabic -->
+  <div class="lang-content rtl-text" id="lang-ar">
+    <div class="pkg-cards">
+
+      <div class="pkg-card">
+        <span class="pkg-badge">العرض الأول</span>
+        <div class="pkg-card-title">ذكريات أساسية</div>
+        <ul class="pkg-bullets-list">
+          <li>ألبوم 10 صور فاخرة</li>
+          <li>مقطع فيديو سينمائي احترافي</li>
+        </ul>
+        <div class="pkg-price-row" style="justify-content:flex-end;">
+          <span class="pkg-old-price">$300</span>
+          <span class="pkg-new-price">$250</span>
+          <span class="pkg-discount">خصم 30%</span>
+        </div>
+      </div>
+
+      <div class="pkg-card">
+        <span class="pkg-badge">العرض الثاني</span>
+        <div class="pkg-card-title">احتفال كامل</div>
+        <ul class="pkg-bullets-list">
+          <li>ألبوم 10 صور فاخرة</li>
+          <li>مقطع فيديو سينمائي احترافي</li>
+          <li>تصوير كامل للحفل (دقة عالية على USB)</li>
+          <li>تغطية فيديو كاملة للحفل</li>
+        </ul>
+        <div class="pkg-price-row" style="justify-content:flex-end;">
+          <span class="pkg-old-price">$615</span>
+          <span class="pkg-new-price">$500</span>
+          <span class="pkg-discount">خصم 35%</span>
+        </div>
+      </div>
+
+      <div class="pkg-card vip">
+        <span class="pkg-badge">العرض الثالث — VIP</span>
+        <div class="pkg-card-title">تجربة VIP</div>
+        <ul class="pkg-bullets-list">
+          <li>ألبوم فاخر بـ 20 صورة</li>
+          <li>مقطع فيديو VIP سينمائي</li>
+          <li>صور عائلية (مطبوعة ورقمية على USB)</li>
+          <li>تغطية فيديو كاملة للحفل</li>
+          <li>تصوير جوي بالطائرة المسيّرة (درون)</li>
+        </ul>
+        <div class="pkg-price-row" style="justify-content:flex-end;">
+          <span class="pkg-old-price">$1,415</span>
+          <span class="pkg-new-price">$950</span>
+          <span class="pkg-discount">خصم 40%</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
 <!-- ── /WEDDING PACKAGES ── -->
 
@@ -295,11 +350,11 @@ document.querySelectorAll('.gallery img').forEach(img => {
 lb.addEventListener('click', e => { if (e.target === lb || e.target === lbClose) closeLb(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
 
-function switchLang(lang) {
+function switchLang(lang,btn) {
   document.querySelectorAll('.lang-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
   document.getElementById('lang-' + lang).classList.add('active');
-  event.target.classList.add('active');
+  btn.classList.add('active');
 }
 </script>
 
