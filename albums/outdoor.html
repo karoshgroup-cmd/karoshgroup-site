@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Outdoor - Karosh Group</title>
+<link rel="stylesheet" href="../styles.css" />
+<style>
+.sec-page{padding:80px 16px 60px;max-width:900px;margin:0 auto;}
+.back-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  color:#fff;padding:8px 16px;border-radius:30px;cursor:pointer;
+  font-size:13px;font-weight:600;text-decoration:none;margin-bottom:24px;
+  transition:.2s ease;
+}
+.back-btn:hover{background:rgba(255,255,255,.15);}
+.sec-title{font-size:28px;font-weight:800;margin:0 0 20px;letter-spacing:.04em;}
+.eq-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+.eq-grid .tile{min-height:180px;}
+.eq-grid .wedding,.eq-grid .agency{grid-column:auto;grid-row:auto;}
+@media(max-width:480px){.eq-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body style="background:#0a0a0a;color:#fff;font-family:'Inter',sans-serif;">
+<div class="sec-page">
+  <a class="back-btn" onclick="history.back();return false;" href="javascript:history.back()">&#8592; Back</a>
+  <h1 class="sec-title">🌿 Outdoor</h1>
+  <div class="main-grid eq-grid">
+    <a class="tile wedding" href="/albums/wedding.html">
+      <h3>Wedding</h3><p>Photography &amp; Films</p>
+    </a>
+    <a class="tile graduation" href="/albums/graduation.html">
+      <h3>Graduation</h3><p>Photoshoots</p>
+    </a>
+    <a class="tile poster" href="/albums/poster.html">
+      <h3>Poster</h3><p>Design</p>
+    </a>
+    <a class="tile engagement" href="/albums/engagement.html">
+      <h3>Engagement</h3><p>Couple Session</p>
+    </a>
+  </div>
+</div>
+</body>
+</html>

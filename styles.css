@@ -346,6 +346,29 @@ h1{
   background:url('images/uploads/agency.png') center/cover no-repeat;
 }
 
+/* ===== Main Section Tiles (Outdoor / Studio / Agency) ===== */
+.outdoor-section{
+  background:url('images/uploads/wedding.jpg') center/cover no-repeat;
+  min-height:220px;
+}
+.studio-section{
+  background:url('images/uploads/newborn.jpeg') center/cover no-repeat;
+  min-height:220px;
+}
+.agency-section{
+  background:url('images/uploads/agency.png') center/cover no-repeat;
+  min-height:220px;
+}
+.section-main-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+  width:100%;
+  margin-top:24px;
+}
+.section-main-grid .tile h3{font-size:26px;}
+.section-main-grid .tile p{font-size:15px;opacity:.85;}
+
 /* Dark overlay so text is readable */
 .tile::before{
   content:"";
