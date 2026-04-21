@@ -6,55 +6,43 @@
 <title>Graduation Photos - Karosh Group</title>
 <link rel="stylesheet" href="../styles.css" />
 <style>
-.gallery{padding:120px 16px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.gallery{padding:120px 16px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
 .gallery img{width:100%;height:300px;object-fit:cover;border-radius:16px;cursor:pointer;transition:transform .4s ease, box-shadow .4s ease, opacity .4s ease;display:block;}
 .gallery img:hover{transform:scale(1.04);box-shadow:0 20px 60px rgba(0,0,0,.7);opacity:.92;}
 .page-title{text-align:center;padding:110px 16px 0;font-size:28px;font-weight:800;letter-spacing:.04em;}
-.more-soon{text-align:center;padding:40px 16px 60px;color:rgba(255,255,255,.4);font-size:14px;}
-
+.more-soon{text-align:center;padding:20px 16px 0;color:rgba(255,255,255,.4);font-size:14px;}
 /* Lightbox */
-.lb-overlay{
-  position:fixed;inset:0;
-  background:rgba(0,0,0,0);
-  z-index:9999;
-  display:flex;align-items:center;justify-content:center;
-  cursor:zoom-out;
-  pointer-events:none;
-  transition:background .5s ease;
-}
-.lb-overlay.active{
-  background:rgba(0,0,0,.95);
-  pointer-events:all;
-}
-.lb-overlay img{
-  max-width:92vw;max-height:90vh;
-  object-fit:contain;
-  border-radius:6px;
-  opacity:0;
-  transform:scale(.88);
-  transition:opacity .45s ease, transform .45s cubic-bezier(.16,1,.3,1);
-  box-shadow:0 30px 100px rgba(0,0,0,.8);
-  pointer-events:none;
-}
-.lb-overlay.active img{
-  opacity:1;
-  transform:scale(1);
-}
-.lb-close{
-  position:fixed;top:22px;right:30px;
-  font-size:32px;color:#fff;
-  cursor:pointer;
-  opacity:0;
-  transition:opacity .4s ease .2s, transform .3s ease;
-  line-height:1;
-  pointer-events:none;
-}
+.lb-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;pointer-events:none;transition:background .5s ease;}
+.lb-overlay.active{background:rgba(0,0,0,.95);pointer-events:all;}
+.lb-overlay img{max-width:92vw;max-height:90vh;object-fit:contain;border-radius:6px;opacity:0;transform:scale(.88);transition:opacity .45s ease, transform .45s cubic-bezier(.16,1,.3,1);box-shadow:0 30px 100px rgba(0,0,0,.8);pointer-events:none;}
+.lb-overlay.active img{opacity:1;transform:scale(1);}
+.lb-close{position:fixed;top:22px;right:30px;font-size:32px;color:#fff;cursor:pointer;opacity:0;transition:opacity .4s ease .2s, transform .3s ease;line-height:1;pointer-events:none;}
 .lb-overlay.active .lb-close{opacity:.7;pointer-events:all;}
 .lb-close:hover{opacity:1;transform:rotate(90deg);}
+/* Packages */
+.pkg-section{padding:40px 16px 60px;max-width:800px;margin:0 auto;}
+.pkg-section-title{text-align:center;font-size:22px;font-weight:800;margin:0 0 6px;color:#fff;}
+.pkg-section-sub{text-align:center;font-size:13px;color:rgba(255,255,255,.5);margin:0 0 28px;}
+.pkg-lang-toggle{display:flex;gap:8px;justify-content:center;margin-bottom:24px;}
+.lang-btn{padding:7px 20px;border-radius:30px;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.6);font-size:13px;font-weight:600;cursor:pointer;transition:.2s;}
+.lang-btn.active{background:#fff;color:#000;}
+.pkg-cards{display:flex;flex-direction:column;gap:16px;}
+.pkg-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:20px 20px 18px;}
+.pkg-card.vip{border-color:rgba(100,200,255,.5);background:linear-gradient(135deg,rgba(30,80,140,.25),rgba(0,0,0,.4));}
+.pkg-badge{display:inline-block;background:linear-gradient(90deg,#3b9ddd,#7ec8e3);color:#000;font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;margin-bottom:10px;letter-spacing:.05em;}
+.pkg-card.vip .pkg-badge{background:linear-gradient(90deg,#64c8ff,#a8e6ff);}
+.pkg-card-title{font-size:17px;font-weight:800;margin:0 0 10px;color:#fff;}
+.pkg-bullets-list{list-style:none;padding:0;margin:0 0 14px;}
+.pkg-bullets-list li{font-size:13px;color:rgba(255,255,255,.8);padding:4px 0;display:flex;align-items:flex-start;gap:6px;}
+.pkg-bullets-list li::before{content:"•";color:#3b9ddd;font-weight:900;}
+.pkg-price-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.pkg-price{font-size:22px;font-weight:900;color:#7ec8e3;}
+.lang-content{display:none;}
+.lang-content.active{display:block;}
+.rtl-text{direction:rtl;text-align:right;}
 </style>
 </head>
 <body>
-
 <header class="topbar">
   <div class="wrap nav">
     <a class="brand" href="javascript:history.back()" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:8px;"><span class="dot"></span><span class="brand-text">KAROSH <span class="muted">GROUP</span></span></a>
@@ -63,42 +51,128 @@
 </header>
 
 <h2 class="page-title">Graduation Photos</h2>
-
 <div class="gallery">
   <img src="../images/uploads/Graduation.JPG" alt="Graduation photo">
   <img src="../images/uploads/Graduation1.JPG" alt="Graduation photo">
 </div>
-
 <p class="more-soon">More photos coming soon</p>
+
+<!-- GRADUATION PACKAGES -->
+<div class="pkg-section">
+  <p class="pkg-section-title">🎓 Exclusive Graduation Offers</p>
+  <p class="pkg-section-sub">Celebrate your achievement with our special packages</p>
+  <div class="pkg-lang-toggle">
+    <button class="lang-btn active" onclick="switchLang('en',this)">English</button>
+    <button class="lang-btn" onclick="switchLang('ku',this)">کوردی</button>
+  </div>
+
+  <!-- English -->
+  <div class="lang-content active" id="lang-en">
+    <div class="pkg-cards">
+      <div class="pkg-card">
+        <span class="pkg-badge">OFFER 1</span>
+        <div class="pkg-card-title">The Essential Start</div>
+        <ul class="pkg-bullets-list">
+          <li>6 Professional Photos</li>
+          <li>Cinematic Video Reel</li>
+        </ul>
+        <div class="pkg-price-row"><span class="pkg-price">50,000 IQD</span></div>
+      </div>
+      <div class="pkg-card">
+        <span class="pkg-badge">OFFER 2</span>
+        <div class="pkg-card-title">The Deluxe Choice</div>
+        <ul class="pkg-bullets-list">
+          <li>8 Professional Photos</li>
+          <li>Cinematic Video Reel</li>
+        </ul>
+        <div class="pkg-price-row"><span class="pkg-price">70,000 IQD</span></div>
+      </div>
+      <div class="pkg-card">
+        <span class="pkg-badge">OFFER 3</span>
+        <div class="pkg-card-title">The Album Collection</div>
+        <ul class="pkg-bullets-list">
+          <li>11 Professional Photos</li>
+          <li>Premium A4 Size Album</li>
+          <li>Cinematic Video Reel</li>
+        </ul>
+        <div class="pkg-price-row"><span class="pkg-price">95,000 IQD</span></div>
+      </div>
+      <div class="pkg-card vip">
+        <span class="pkg-badge">OFFER 4 — VIP</span>
+        <div class="pkg-card-title">The VIP Experience</div>
+        <ul class="pkg-bullets-list">
+          <li>13 Professional Photos</li>
+          <li>Large Premium Album (30×45)</li>
+          <li>VIP Cinematic Video Reel</li>
+        </ul>
+        <div class="pkg-price-row"><span class="pkg-price">180,000 IQD</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kurdish -->
+  <div class="lang-content rtl-text" id="lang-ku">
+    <div class="pkg-cards">
+      <div class="pkg-card">
+        <span class="pkg-badge">١ — ئۆفەری یەکەم</span>
+        <div class="pkg-card-title">ئۆفەری یەکەم</div>
+        <ul class="pkg-bullets-list">
+          <li>٦ وێنەی پرۆفیشناڵ</li>
+          <li>ڤیدیۆ ڕیڵز (Reel)</li>
+        </ul>
+        <div class="pkg-price-row" style="justify-content:flex-end;"><span class="pkg-price">٥٠,٠٠٠ دینار</span></div>
+      </div>
+      <div class="pkg-card">
+        <span class="pkg-badge">٢ — ئۆفەری دووەم</span>
+        <div class="pkg-card-title">ئۆفەری دووەم</div>
+        <ul class="pkg-bullets-list">
+          <li>٨ وێنەی پرۆفیشناڵ</li>
+          <li>ڤیدیۆ ڕیڵز (Reel)</li>
+        </ul>
+        <div class="pkg-price-row" style="justify-content:flex-end;"><span class="pkg-price">٧٠,٠٠٠ دینار</span></div>
+      </div>
+      <div class="pkg-card">
+        <span class="pkg-badge">٣ — ئۆفەری سێیەم</span>
+        <div class="pkg-card-title">ئۆفەری سێیەم (ئەلبوم)</div>
+        <ul class="pkg-bullets-list">
+          <li>١١ وێنەی پرۆفیشناڵ</li>
+          <li>ئەلبومێکی قەبارە A4</li>
+          <li>ڤیدیۆ ڕیڵز (Reel)</li>
+        </ul>
+        <div class="pkg-price-row" style="justify-content:flex-end;"><span class="pkg-price">٩٥,٠٠٠ دینار</span></div>
+      </div>
+      <div class="pkg-card vip">
+        <span class="pkg-badge">٤ — ئۆفەری VIP</span>
+        <div class="pkg-card-title">ئۆفەری VIP</div>
+        <ul class="pkg-bullets-list">
+          <li>١٣ وێنەی پرۆفیشناڵ</li>
+          <li>ئەلبومێکی گەورەی نایاب (30×45)</li>
+          <li>ڤیدیۆ ڕیڵزی VIP</li>
+        </ul>
+        <div class="pkg-price-row" style="justify-content:flex-end;"><span class="pkg-price">١٨٠,٠٠٠ دینار</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /GRADUATION PACKAGES -->
 
 <div class="lb-overlay" id="lb">
   <span class="lb-close" id="lb-close">&#x2715;</span>
   <img id="lb-img" src="" alt="">
 </div>
-
 <script>
-const lb = document.getElementById('lb');
-const lbImg = document.getElementById('lb-img');
-const lbClose = document.getElementById('lb-close');
-
-function openLb(src) {
-  lbImg.src = src;
-  requestAnimationFrame(() => {
-    lb.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  });
+const lb=document.getElementById('lb'),lbImg=document.getElementById('lb-img'),lbClose=document.getElementById('lb-close');
+function openLb(src){lbImg.src=src;requestAnimationFrame(()=>{lb.classList.add('active');document.body.style.overflow='hidden';});}
+function closeLb(){lb.classList.remove('active');document.body.style.overflow='';}
+document.querySelectorAll('.gallery img').forEach(img=>img.addEventListener('click',()=>openLb(img.src)));
+lb.addEventListener('click',e=>{if(e.target===lb||e.target===lbClose)closeLb();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLb();});
+function switchLang(lang,btn){
+  document.querySelectorAll('.lang-content').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(el=>el.classList.remove('active'));
+  document.getElementById('lang-'+lang).classList.add('active');
+  btn.classList.add('active');
 }
-function closeLb() {
-  lb.classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-document.querySelectorAll('.gallery img').forEach(img => {
-  img.addEventListener('click', () => openLb(img.src));
-});
-lb.addEventListener('click', e => { if (e.target === lb || e.target === lbClose) closeLb(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
 </script>
-
 </body>
 </html>
