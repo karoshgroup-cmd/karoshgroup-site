@@ -387,12 +387,9 @@ title: images/uploads/dsc03496.jpg outdore
   <script>
   (function(){
     var bar = document.querySelector('.topbar');
-    var last = 0;
     window.addEventListener('scroll', function(){
-      var y = window.scrollY;
-      if(y > last && y > 80){ bar.classList.add('nav-hidden'); }
+      if(window.scrollY > 80){ bar.classList.add('nav-hidden'); }
       else { bar.classList.remove('nav-hidden'); }
-      last = y;
     }, {passive:true});
   })();
   </script>
