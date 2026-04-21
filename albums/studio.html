@@ -23,6 +23,20 @@
 }
 .eq-grid .tile{min-height:180px;}
 .eq-grid .wedding,.eq-grid .agency{grid-column:auto;grid-row:auto;}
+.sec-photo{
+  margin-top:24px;
+  width:100%;
+  border-radius:20px;
+  overflow:hidden;
+  max-height:420px;
+}
+.sec-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  border-radius:20px;
+}
 @media(max-width:480px){.eq-grid{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -40,6 +54,9 @@
     <a class="tile baby" href="/albums/baby.html">
       <h3>Baby Reveals &amp; Pregnancy</h3><p>Maternity</p>
     </a>
+  </div>
+  <div class="sec-photo">
+    <img src="../images/uploads/section-studio.jpeg" alt="Karosh Group Studio" />
   </div>
 </div>
 </body>
