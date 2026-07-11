@@ -61,6 +61,16 @@
   </div>
 </header>
 
+<!-- Mobile nav panel -->
+<div class="mobile-backdrop" id="mobileBackdrop"></div>
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">✕</button>
+  <a href="#services">Services</a>
+  <a href="#portfolio">Portfolio</a>
+  <a href="#retouch">Retouching</a>
+  <a href="#contact">Contact</a>
+</div>
+
 <!-- ===== HERO SLIDER ===== -->
 <section class="hero" id="hero">
   <!-- Slide 1 -->
@@ -310,6 +320,27 @@ setInterval(() => {
 dots.forEach((dot, i) => {
   dot.addEventListener('click', () => goToSlide(i));
 });
+
+/* Mobile nav */
+const mobileToggle = document.getElementById('mobileToggle');
+const mobileNav = document.getElementById('mobileNav');
+const mobileNavClose = document.getElementById('mobileNavClose');
+const mobileBackdrop = document.getElementById('mobileBackdrop');
+
+function openMobileNav() {
+  mobileNav.classList.add('open');
+  mobileBackdrop.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  mobileNav.classList.remove('open');
+  mobileBackdrop.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+mobileToggle.addEventListener('click', openMobileNav);
+mobileNavClose.addEventListener('click', closeMobileNav);
+mobileBackdrop.addEventListener('click', closeMobileNav);
 
 /* Header scroll effect */
 const header = document.getElementById('mainHeader');
