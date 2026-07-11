@@ -66,6 +66,37 @@ img{max-width:100%;display:block}
 
 .mobile-toggle{display:none;background:none;border:none;color:var(--text);font-size:22px;cursor:pointer}
 
+/* Mobile nav panel */
+.mobile-nav{
+  position:fixed;inset:0 0 0 auto;
+  width:min(320px,80vw);
+  background:var(--surface);
+  border-left:1px solid var(--line);
+  z-index:101;
+  transform:translateX(100%);
+  transition:transform .35s cubic-bezier(.25,.46,.45,.94);
+  padding:80px 24px 24px;
+  display:flex;flex-direction:column;gap:6px;
+}
+.mobile-nav.open{transform:translateX(0)}
+.mobile-nav a{
+  font-size:16px;font-weight:600;color:var(--text);
+  padding:14px 0;border-bottom:1px solid var(--line);
+  text-decoration:none;letter-spacing:.02em;
+}
+.mobile-nav a:last-child{border-bottom:none}
+.mobile-nav-close{
+  position:absolute;top:18px;right:18px;
+  background:none;border:none;color:var(--text);font-size:26px;cursor:pointer;
+}
+.mobile-backdrop{
+  position:fixed;inset:0;z-index:100;
+  background:rgba(0,0,0,.6);
+  opacity:0;pointer-events:none;
+  transition:opacity .35s ease;
+}
+.mobile-backdrop.show{opacity:1;pointer-events:auto}
+
 @media(max-width:768px){
   .nav-links{display:none}
   .mobile-toggle{display:block}
