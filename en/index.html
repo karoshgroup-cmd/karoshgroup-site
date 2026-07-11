@@ -207,12 +207,12 @@
   </div>
 </section>
 
-<!-- ===== PHOTOGRAPHY MINI-GAME HUB (React) ===== -->
+<!-- ===== PHOTOGRAPHY STUDIO TYCOON (React) ===== -->
 <section class="section" id="game-hub">
   <div class="section-header reveal">
-    <p class="section-tag">Play &amp; Compete</p>
-    <h2>Photography <strong style="color:#FFD700">Mini-Game Hub</strong></h2>
-    <p class="section-desc">Test your skills with our interactive photo games. Sharpen your timing and observation like a pro.</p>
+    <p class="section-tag">Simulation Game</p>
+    <h2>Photography <strong style="color:#FFD700">Studio Tycoon</strong></h2>
+    <p class="section-desc">Run your own photo studio. Serve customers, snap shots, and upgrade your way to fame.</p>
   </div>
   <div id="react-game-root"></div>
 </section>
@@ -225,307 +225,357 @@
 <style>
 #game-hub .section-tag{color:#FFD700}
 
-/* Hub */
-.hub-menu{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:960px;margin:0 auto}
-@media(max-width:680px){.hub-menu{grid-template-columns:1fr}}
-.hub-card{
+/* === Tycoon Layout === */
+.tycoon-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 320px;gap:20px}
+@media(max-width:900px){.tycoon-wrap{grid-template-columns:1fr}}
+
+/* === HUD === */
+.tycoon-hud{
+  display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:16px;
   background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.01));
-  border:1px solid var(--line);border-radius:var(--radius);padding:36px 28px;
-  text-align:center;cursor:pointer;position:relative;overflow:hidden;
-  transition:transform .35s cubic-bezier(.23,1,.32,1),box-shadow .35s ease,border-color .35s ease;
+  border:1px solid var(--line);border-radius:var(--radius);padding:14px 20px;
 }
-.hub-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(255,215,0,.06),transparent 60%);pointer-events:none}
-.hub-card:hover{transform:translateY(-6px);border-color:rgba(255,215,0,.35);box-shadow:0 20px 50px rgba(0,0,0,.4),0 0 0 1px rgba(255,215,0,.1)}
-.hub-icon{font-size:48px;margin-bottom:14px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.4))}
-.hub-card h3{font-size:22px;margin:0 0 8px;color:var(--text)}
-.hub-card p{font-size:13px;color:var(--muted);line-height:1.6;margin:0 0 20px}
-.hub-play{display:inline-block;padding:10px 28px;border-radius:999px;background:linear-gradient(135deg,#FFD700,#c9a84c);color:#0a0a0f;font-size:13px;font-weight:700;letter-spacing:.04em;transition:transform .25s ease,box-shadow .25s ease}
-.hub-card:hover .hub-play{transform:scale(1.05);box-shadow:0 6px 20px rgba(255,215,0,.25)}
+.hud-item{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.hud-item strong{font-size:18px;color:var(--text)}
+.hud-gold strong{color:#FFD700}
+.hud-bar{flex:1;min-width:140px;height:10px;background:var(--line);border-radius:5px;overflow:hidden}
+.hud-bar-fill{height:100%;background:linear-gradient(90deg,#FFD700,#c9a84c);border-radius:5px;transition:width .4s ease}
 
-/* Game screens */
-.game-screen{max-width:1100px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden}
-.game-topbar{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
-.back-btn{padding:8px 18px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);font-size:12px;font-weight:600;cursor:pointer;transition:all .25s ease}
-.back-btn:hover{border-color:var(--accent);color:var(--accent)}
-.game-title{font-size:16px;font-weight:700;color:#FFD700;flex:1;text-align:center}
-.streak-bar,.hunt-stats{font-size:13px;color:var(--muted);white-space:nowrap}
-.streak-bar strong,.hunt-stats strong{color:#FFD700}
+/* === Studio Area === */
+.tycoon-studio{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;
+}
+.studio-stage{
+  position:relative;width:100%;aspect-ratio:16/10;border-radius:12px;overflow:hidden;
+  background:linear-gradient(180deg,#0f0f15,#1a1a22);border:2px solid var(--line);
+  box-shadow:inset 0 0 50px rgba(0,0,0,.5);margin-bottom:16px;
+}
+.backdrop-swatch{position:absolute;inset:0;opacity:.25;transition:opacity .4s ease}
+.stage-lights{position:absolute;inset:0;pointer-events:none}
+.light-beam{position:absolute;width:60px;height:60px;border-radius:50%;filter:blur(24px);opacity:0;transition:opacity .4s ease}
+.light-beam.on{opacity:.7}
+.stage-customer{
+  position:absolute;bottom:10%;left:50%;transform:translateX(-50%);font-size:72px;
+  filter:drop-shadow(0 6px 14px rgba(0,0,0,.6));transition:all .3s ease;
+}
+.stage-customer.leaving{opacity:0;transform:translateX(-50%) translateX(120px)}
+.stage-customer.angry{filter:drop-shadow(0 6px 14px rgba(0,0,0,.6)) grayscale(100%) brightness(60%)}
 
-/* Action Shot */
-.viewfinder{position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,#0f0f15,#1a1a22);border:2px solid var(--line);box-shadow:inset 0 0 40px rgba(0,0,0,.5)}
-.vf-center{position:absolute;left:50%;top:50%;width:80px;height:80px;border:2px dashed rgba(255,215,0,.25);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:2}
-.subject-runner{position:absolute;top:50%;font-size:56px;transform:translateY(-50%);z-index:3;filter:drop-shadow(0 4px 10px rgba(0,0,0,.5));will-change:left}
-.vf-focus{position:absolute;left:50%;top:50%;width:120px;height:120px;border:2px solid rgba(255,215,0,0);border-radius:8px;transform:translate(-50%,-50%);pointer-events:none;transition:border-color .2s;z-index:2}
-.vf-focus.lock{border-color:rgba(255,215,0,.6);box-shadow:0 0 20px rgba(255,215,0,.15)}
-.action-controls{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:20px}
-.shutter-btn{width:140px;height:140px;border-radius:50%;border:none;background:radial-gradient(circle at 35% 35%,#FFD700,#c9a84c);color:#0a0a0f;font-size:18px;font-weight:800;letter-spacing:.06em;cursor:pointer;box-shadow:0 8px 30px rgba(255,215,0,.3),inset 0 -4px 10px rgba(0,0,0,.15);transition:transform .12s ease,box-shadow .25s ease;display:flex;align-items:center;justify-content:center}
-.shutter-btn:active{transform:scale(.92);box-shadow:0 2px 10px rgba(255,215,0,.2)}
-.shutter-btn:hover{box-shadow:0 12px 40px rgba(255,215,0,.4)}
-.action-feedback{font-size:14px;color:var(--muted);min-height:22px;text-align:center}
+/* Flash */
+.camera-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:10}
+.camera-flash.active{animation:flashPop .25s ease forwards}
+@keyframes flashPop{0%{opacity:.9}100%{opacity:0}}
 
-/* Photo Hunt */
-.hunt-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:768px){.hunt-pair{grid-template-columns:1fr}}
-.hunt-image-wrap{position:relative;border-radius:12px;overflow:hidden;border:2px solid var(--line)}
-.hunt-canvas{position:relative;width:100%;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#1a1a2e,#16213e)}
-.hc-shape{position:absolute;width:48px;height:48px;transform:translate(-50%,-50%);transition:all .3s ease}
-.hc-shape.circle{border-radius:50%;background:linear-gradient(135deg,#FF6B6B,#ee5a5a);box-shadow:0 4px 15px rgba(255,107,107,.3)}
-.hc-shape.circle.hidden{opacity:0;pointer-events:none}
-.hc-shape.triangle{width:0;height:0;border-left:24px solid transparent;border-right:24px solid transparent;border-bottom:42px solid #4ECDC4;filter:drop-shadow(0 4px 10px rgba(78,205,196,.3))}
-.hc-shape.square{border-radius:8px;background:linear-gradient(135deg,#FFD93D,#f0c800);box-shadow:0 4px 15px rgba(255,217,61,.3)}
-.hc-shape.diamond{width:36px;height:36px;transform:translate(-50%,-50%) rotate(45deg);background:linear-gradient(135deg,#A8E6CF,#88d9b0);box-shadow:0 4px 15px rgba(168,230,207,.3)}
-.hc-shape.diamond.diff-color{background:linear-gradient(135deg,#FF8B94,#ff6b75)!important}
-.hc-shape.star{width:0;height:0;margin-left:24px;margin-top:24px;border-left:24px solid transparent;border-right:24px solid transparent;border-bottom:18px solid #C7CEEA;position:relative;filter:drop-shadow(0 4px 10px rgba(199,206,234,.3))}
-.hc-shape.star:before{content:'';position:absolute;left:-24px;top:18px;width:0;height:0;border-left:24px solid transparent;border-right:24px solid transparent;border-top:18px solid #C7CEEA}
-.hc-shape.moon{border-radius:50%;background:#F7DC6F;box-shadow:0 4px 15px rgba(247,220,111,.3)}
-.hc-shape.moon::after{content:'';position:absolute;width:36px;height:36px;border-radius:50%;background:#1a1a2e;top:-6px;left:10px}
-.hc-shape.heart{width:30px;height:26px;position:relative}
-.hc-shape.heart::before,.hc-shape.heart::after{content:'';position:absolute;width:18px;height:28px;border-radius:18px 18px 0 0;background:linear-gradient(135deg,#FF6B9D,#ee5a8a)}
-.hc-shape.heart::before{left:18px;transform:rotate(-45deg);transform-origin:0 100%}
-.hc-shape.heart::after{left:0;transform:rotate(45deg);transform-origin:100% 100%}
-.hc-shape.heart.diff-rotate{transform:translate(-50%,-50%) rotate(25deg)}
+/* Review bubble */
+.review-bubble{
+  position:absolute;top:12%;left:50%;transform:translateX(-50%);z-index:15;
+  background:rgba(5,5,8,.92);border:1px solid var(--line);border-radius:12px;padding:10px 18px;
+  font-size:13px;color:var(--text);white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .3s;
+}
+.review-bubble.show{opacity:1}
+.review-bubble.happy{border-color:rgba(255,215,0,.4);color:#FFD700}
+.review-bubble.sad{border-color:rgba(255,80,80,.4);color:#ff6b6b}
 
-.difference-zone{position:absolute;width:44px;height:44px;border-radius:50%;cursor:pointer;transform:translate(-50%,-50%);z-index:5}
-.difference-zone:hover{background:rgba(255,215,0,.08);box-shadow:0 0 12px rgba(255,215,0,.15)}
-.difference-zone.found{cursor:default;pointer-events:none}
-.difference-zone.found::after{content:'';position:absolute;inset:-6px;border:3px solid #FFD700;border-radius:50%;box-shadow:0 0 20px rgba(255,215,0,.4);animation:foundPulse .6s ease forwards}
-@keyframes foundPulse{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
-.hunt-msg{text-align:center;font-size:15px;color:var(--muted);min-height:24px;margin-top:14px}
+/* Queue */
+.queue-bar{
+  display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;
+}
+.queue-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.queue-slot{width:44px;height:44px;border-radius:50%;border:2px dashed var(--line);display:flex;align-items:center;justify-content:center;font-size:22px;transition:all .3s ease}
+.queue-slot.filled{border-style:solid;border-color:rgba(255,215,0,.3);background:rgba(255,215,0,.06)}
 
-/* Overlay */
-.game-overlay{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.75);backdrop-filter:blur(6px)}
-.game-overlay.show{display:flex}
-.overlay-card{background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:var(--radius);padding:40px 48px;text-align:center;max-width:380px;width:90%;animation:popIn .4s cubic-bezier(.23,1,.32,1)}
-@keyframes popIn{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.overlay-title{font-size:28px;font-weight:800;margin-bottom:10px;background:linear-gradient(135deg,#FFD700,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.overlay-body{font-size:15px;color:var(--text);margin-bottom:24px;line-height:1.6}
-.overlay-btn{padding:12px 32px;border-radius:999px;border:none;background:linear-gradient(135deg,#FFD700,#c9a84c);color:#0a0a0f;font-size:14px;font-weight:700;cursor:pointer;transition:all .25s ease}
-.overlay-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,215,0,.25)}
+/* Buttons */
+.snap-btn{
+  width:100%;padding:14px;border-radius:999px;border:none;
+  background:linear-gradient(135deg,#FFD700,#c9a84c);color:#0a0a0f;
+  font-size:15px;font-weight:800;letter-spacing:.04em;cursor:pointer;
+  transition:transform .12s ease,box-shadow .25s ease;
+}
+.snap-btn:active{transform:scale(.96)}
+.snap-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+/* === Shop Panel === */
+.tycoon-shop{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;
+}
+.shop-title{font-size:16px;font-weight:700;color:#FFD700;margin:0 0 16px;display:flex;align-items:center;gap:8px}
+.shop-item{
+  background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px;
+  transition:border-color .25s ease;
+}
+.shop-item:hover{border-color:rgba(255,215,0,.2)}
+.shop-item-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.shop-item-desc{font-size:11px;color:var(--muted);margin-bottom:10px}
+.shop-item-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.shop-price{font-size:12px;color:var(--muted)}
+.shop-price strong{color:#FFD700}
+.shop-btn{
+  padding:6px 16px;border-radius:999px;border:none;background:linear-gradient(135deg,#FFD700,#c9a84c);
+  color:#0a0a0f;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s ease;
+}
+.shop-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(255,215,0,.2)}
+.shop-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* Toast */
+.tycoon-toast{position:fixed;bottom:24px;right:24px;z-index:300;
+  background:rgba(5,5,8,.95);border:1px solid var(--line);border-radius:12px;padding:12px 20px;
+  font-size:13px;color:var(--text);box-shadow:0 12px 40px rgba(0,0,0,.5);
+  animation:toastIn .35s cubic-bezier(.23,1,.32,1);
+}
+.tycoon-toast.gold{border-color:rgba(255,215,0,.3);color:#FFD700}
+.tycoon-toast.angry{border-color:rgba(255,80,80,.3);color:#ff6b6b}
+@keyframes toastIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 </style>
 
 <script type="text/babel">
 const { useState, useEffect, useRef, useCallback } = React;
 
-/* ---------- Overlay Modal ---------- */
-function OverlayModal({ title, body, onClose }) {
-  if (!title) return null;
-  return (
-    <div className="game-overlay show" onClick={onClose}>
-      <div className="overlay-card" onClick={e => e.stopPropagation()}>
-        <div className="overlay-title">{title}</div>
-        <div className="overlay-body">{body}</div>
-        <button className="overlay-btn" onClick={onClose}>Continue</button>
-      </div>
-    </div>
-  );
+/* ===================== DATA ===================== */
+const CUSTOMER_ICONS = ['\uD83D\uDC68\u200D\uD83D\uDCBC','\uD83D\uDC69\u200D\uD83D\uDCBC','\uD83E\uDDD1\u200D\uD83C\uDFA8','\uD83D\uDC70','\uD83D\uDC71','\uD83E\uDDD1\u200D\uD83C\uDF93','\uD83D\uDC69\u200D\uD83E\uDDB0','\uD83E\uDDD4','\uD83D\uDC83','\uD83E\uDD38'];
+const CUSTOMER_NAMES = ['Ahmad','Leyla','Dilan','Sara','Haval','Narin','Rebin','Shilan','Beryar','Rojan'];
+
+const UPGRADES = {
+  lights: [
+    { level:1, name:'Ring Light', price:80, successBoost:5, desc:'+5% photo approval' },
+    { level:2, name:'Softbox Kit', price:250, successBoost:8, desc:'+8% photo approval' },
+    { level:3, name:'LED Panel Set', price:600, successBoost:10, desc:'+10% photo approval' },
+    { level:4, name:'Pro Studio Pack', price:1500, successBoost:12, desc:'+12% photo approval' },
+    { level:5, name:'Cinema Rig', price:4000, successBoost:15, desc:'+15% photo approval' }
+  ],
+  backgrounds: [
+    { level:1, name:'White Roll', price:60, payBoost:5, desc:'+$5 per customer' },
+    { level:2, name:'Canvas Backdrop', price:200, payBoost:8, desc:'+$8 per customer' },
+    { level:3, name:'Velvet Curtain', price:500, payBoost:12, desc:'+$12 per customer' },
+    { level:4, name:'Green Screen', price:1200, payBoost:18, desc:'+$18 per customer' },
+    { level:5, name:'Infinity Cove', price:3500, payBoost:25, desc:'+$25 per customer' }
+  ],
+  studio: [
+    { level:1, name:'Waiting Bench', price:100, slots:1, desc:'+1 queue slot' },
+    { level:2, name:'Sofa Corner', price:350, slots:1, desc:'+1 queue slot' },
+    { level:3, name:'Reception Desk', price:900, slots:1, desc:'+1 queue slot' },
+    { level:4, name:'Lounge Area', price:2200, slots:2, desc:'+2 queue slots' },
+    { level:5, name:'VIP Lobby', price:6000, slots:2, desc:'+2 queue slots' }
+  ]
+};
+
+const LEVELS = [
+  { level:1, xpNeed:0, title:'Novice' },
+  { level:2, xpNeed:300, title:'Assistant' },
+  { level:3, xpNeed:800, title:'Photographer' },
+  { level:4, xpNeed:1800, title:'Senior Shooter' },
+  { level:5, xpNeed:3500, title:'Studio Pro' },
+  { level:6, xpNeed:6000, title:'Art Director' },
+  { level:7, xpNeed:10000, title:'Celebrity Photographer' },
+  { level:8, xpNeed:16000, title:'Industry Legend' }
+];
+
+/* ===================== UTILS ===================== */
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function pick(arr){ return arr[randInt(0,arr.length-1)]; }
+
+/* ===================== COMPONENTS ===================== */
+function Toast({ msg, type, onDone }){
+  useEffect(()=>{ const t=setTimeout(onDone,2000); return()=>clearTimeout(t); },[onDone]);
+  return <div className={"tycoon-toast "+(type||'')}>{msg}</div>;
 }
 
-/* ---------- Hub Screen ---------- */
-function HubScreen({ onSelect }) {
-  return (
-    <div className="hub-menu">
-      <div className="hub-card" onClick={() => onSelect('action')}>
-        <div className="hub-icon">&#x1F4F8;</div>
-        <h3>Action Shot</h3>
-        <p>Time your shutter perfectly to capture the moving subject dead center.</p>
-        <span className="hub-play">Play Now</span>
-      </div>
-      <div className="hub-card" onClick={() => onSelect('hunt')}>
-        <div className="hub-icon">&#x1F50D;</div>
-        <h3>Photo Hunt</h3>
-        <p>Spot the difference between two studio photos before time runs out.</p>
-        <span className="hub-play">Play Now</span>
-      </div>
-    </div>
-  );
-}
+function StudioTycoonApp(){
+  /* ---- State ---- */
+  const [money,setMoney]=useState(0);
+  const [totalEarned,setTotalEarned]=useState(0);
+  const [lvl,setLvl]=useState(1);
+  const [lightLvl,setLightLvl]=useState(0);
+  const [bgLvl,setBgLvl]=useState(0);
+  const [studioLvl,setStudioLvl]=useState(0);
+  const [queue,setQueue]=useState([]);
+  const [currentCustomer,setCurrentCustomer]=useState(null);
+  const [flash,setFlash]=useState(false);
+  const [review,setReview]=useState(null);
+  const [toast,setToast]=useState(null);
+  const [snapping,setSnapping]=useState(false);
+  const spawnRef=useRef(null);
 
-/* ---------- Action Shot Game ---------- */
-function ActionShotScreen({ onBack }) {
-  const [streak, setStreak] = useState(0);
-  const [modal, setModal] = useState(null);
-  const [feedback, setFeedback] = useState('Click SHUTTER when the subject hits the center crosshair!');
-  const runnerRef = useRef(null);
-  const rafRef = useRef(null);
-  const stateRef = useRef({ pos: -60, dir: 1, speed: 3.2, running: false });
+  const maxQueue = 1 + UPGRADES.studio.slice(0,studioLvl).reduce((a,u)=>a+u.slots,0);
+  const baseRate = 70 + UPGRADES.lights.slice(0,lightLvl).reduce((a,u)=>a+u.successBoost,0);
+  const basePay = 15 + UPGRADES.backgrounds.slice(0,bgLvl).reduce((a,u)=>a+u.payBoost,0);
 
-  useEffect(() => {
-    const runner = runnerRef.current;
-    if (!runner) return;
-    const s = stateRef.current;
-    s.running = true;
-    s.pos = -60;
-    s.dir = 1;
+  const nextLevel = LEVELS.find(l=>l.level>lvl) || LEVELS[LEVELS.length-1];
+  const prevNeed = LEVELS.find(l=>l.level===lvl)?.xpNeed||0;
+  const xpInLevel = totalEarned - prevNeed;
+  const xpNeeded = nextLevel.xpNeed - prevNeed;
+  const progressPct = Math.min(100, Math.max(0, (xpInLevel/xpNeeded)*100 ));
 
-    function loop() {
-      if (!s.running) return;
-      const W = runner.parentElement.clientWidth;
-      s.pos += s.speed * s.dir;
-      if (s.pos > W + 60) { s.pos = -60; s.dir = 1; }
-      runner.style.left = s.pos + 'px';
-      rafRef.current = requestAnimationFrame(loop);
-    }
-    rafRef.current = requestAnimationFrame(loop);
-    return () => { s.running = false; cancelAnimationFrame(rafRef.current); };
-  }, []);
-
-  const takeShot = useCallback(() => {
-    const s = stateRef.current;
-    if (!s.running) return;
-    const W = runnerRef.current.parentElement.clientWidth;
-    const center = W / 2;
-    const dist = Math.abs(s.pos - center);
-    if (dist < 25) {
-      setStreak(v => v + 1);
-      setModal({ title: '\uD83D\uDCF8 Perfect Capture!', body: 'Nailed it! The subject is razor-sharp dead center.' });
-    } else if (dist < 70) {
-      setStreak(0);
-      setModal({ title: '\uD83D\uDCF1 Slightly Blurry', body: 'Close! Just a hair off center. Try again!' });
-    } else {
-      setStreak(0);
-      setModal({ title: '\uD83D\uDEAB Missed the Shot!', body: 'The subject got away. Keep your eye on the center!' });
-    }
-  }, []);
-
-  const locked = (() => {
-    const s = stateRef.current;
-    const runner = runnerRef.current;
-    if (!runner) return false;
-    const W = runner.parentElement.clientWidth;
-    const center = W / 2;
-    return Math.abs(s.pos - center) < 50;
-  })();
-
-  return (
-    <div className="game-screen">
-      <div className="game-topbar">
-        <button className="back-btn" onClick={onBack}>&larr; Back to Menu</button>
-        <div className="game-title">Action Shot</div>
-        <div className="streak-bar">Streak: <strong>{streak}</strong></div>
-      </div>
-      <div className="viewfinder">
-        <div className="vf-center"></div>
-        <div className="subject-runner" ref={runnerRef} style={{left:'-60px'}}>&#x1F3C4;</div>
-        <div className={"vf-focus" + (locked ? " lock" : "")}></div>
-      </div>
-      <div className="action-controls">
-        <button className="shutter-btn" onClick={takeShot}>SHUTTER</button>
-        <div className="action-feedback">{feedback}</div>
-      </div>
-      <OverlayModal {...modal} onClose={() => setModal(null)} />
-    </div>
-  );
-}
-
-/* ---------- Photo Hunt Game ---------- */
-function PhotoHuntScreen({ onBack }) {
-  const [timeLeft, setTimeLeft] = useState(30);
-  const [found, setFound] = useState([]);
-  const [modal, setModal] = useState(null);
-  const timerRef = useRef(null);
-  const startedRef = useRef(false);
-
-  useEffect(() => {
-    if (startedRef.current) return;
-    startedRef.current = true;
-    timerRef.current = setInterval(() => {
-      setTimeLeft(t => {
-        if (t <= 1) { clearInterval(timerRef.current); return 0; }
-        return t - 1;
+  /* ---- Spawn customers ---- */
+  useEffect(()=>{
+    function tick(){
+      setQueue(q=>{
+        if(q.length>=maxQueue) return q;
+        const id = Date.now()+Math.random();
+        const name = pick(CUSTOMER_NAMES);
+        const icon = pick(CUSTOMER_ICONS);
+        return [...q,{id,name,icon}];
       });
-    }, 1000);
-    return () => clearInterval(timerRef.current);
-  }, []);
-
-  useEffect(() => {
-    if (timeLeft === 0 && found.length < 3) {
-      setModal({ title: '\u23F0 Time\'s Up!', body: `You found ${found.length}/3 differences. Try again!` });
     }
-  }, [timeLeft, found]);
+    spawnRef.current = setInterval(tick, randInt(3500,6500));
+    return ()=>clearInterval(spawnRef.current);
+  },[maxQueue]);
 
-  const handleFound = useCallback((zoneId) => {
-    if (timeLeft === 0 || found.includes(zoneId)) return;
-    const next = [...found, zoneId];
-    setFound(next);
-    if (next.length >= 3) {
-      clearInterval(timerRef.current);
-      setModal({ title: '\uD83C\uDF89 Eagle Eye!', body: 'You spotted all 3 differences with time to spare!' });
-    }
-  }, [timeLeft, found]);
+  /* ---- Serve next customer ---- */
+  const serveNext = useCallback(()=>{
+    if(currentCustomer || queue.length===0 || snapping) return;
+    const [next,...rest] = queue;
+    setQueue(rest);
+    setCurrentCustomer({...next, happy:null});
+    setReview(null);
+  },[queue,currentCustomer,snapping]);
 
-  const zones = [
-    { id: 1, top: '22%', left: '28%', diff: 'hidden' },
-    { id: 2, top: '50%', left: '58%', diff: 'color' },
-    { id: 3, top: '72%', left: '40%', diff: 'rotate' }
-  ];
+  useEffect(()=>{ serveNext(); },[queue.length, serveNext]);
 
-  const renderShape = (shape, cls, top, left) => (
-    <div key={shape} className={"hc-shape " + shape + " " + cls} style={{top,left}}></div>
-  );
+  /* ---- Take Photo ---- */
+  const takePhoto = useCallback(()=>{
+    if(!currentCustomer || snapping) return;
+    setSnapping(true);
+    setFlash(true);
+    setTimeout(()=>setFlash(false),250);
+
+    setTimeout(()=>{
+      const roll = Math.random()*100;
+      const success = roll < baseRate;
+      const pay = success ? randInt(Math.floor(basePay*0.8), Math.floor(basePay*1.4)) : 0;
+      const tip = success && Math.random()<0.25 ? randInt(5,20) : 0;
+      const total = pay + tip;
+
+      if(success){
+        setMoney(m=>m+total);
+        setTotalEarned(te=>te+total);
+        setToast({msg:`+ $${total}  ${tip?`(+$${tip} tip)`:""}`, type:'gold'});
+        setReview({text:`${currentCustomer.name}: "Love it!" 💛`, type:'happy'});
+      }else{
+        setReview({text:`${currentCustomer.name}: "Not great..." 😕`, type:'sad'});
+        setToast({msg:`${currentCustomer.name} left unhappy`, type:'angry'});
+      }
+
+      setCurrentCustomer(c=>({...c, happy:success}));
+
+      setTimeout(()=>{
+        setCurrentCustomer(null);
+        setReview(null);
+        setSnapping(false);
+      }, 1400);
+    }, 350);
+  },[currentCustomer, snapping, baseRate, basePay]);
+
+  /* ---- Level up ---- */
+  useEffect(()=>{
+    const check = LEVELS.slice().reverse().find(l=>totalEarned>=l.xpNeed);
+    if(check && check.level!==lvl) setLvl(check.level);
+  },[totalEarned, lvl]);
+
+  /* ---- Buy upgrade ---- */
+  const buy = useCallback((type)=>{
+    const list = UPGRADES[type];
+    const current = type==='lights'?lightLvl : type==='backgrounds'?bgLvl : studioLvl;
+    if(current>=list.length) return;
+    const item = list[current];
+    if(money<item.price) return;
+    setMoney(m=>m-item.price);
+    if(type==='lights') setLightLvl(v=>v+1);
+    if(type==='backgrounds') setBgLvl(v=>v+1);
+    if(type==='studio') setStudioLvl(v=>v+1);
+    setToast({msg:`Upgraded: ${item.name}`, type:'gold'});
+  },[money,lightLvl,bgLvl,studioLvl]);
+
+  /* ---- Render helpers ---- */
+  const renderUpgrade = (type, label, icon) => {
+    const list = UPGRADES[type];
+    const current = type==='lights'?lightLvl : type==='backgrounds'?bgLvl : studioLvl;
+    const item = list[current];
+    const canBuy = item && money>=item.price;
+    const maxed = current>=list.length;
+    return (
+      <div className="shop-item" key={type}>
+        <div className="shop-item-name">{icon} {label} — Lv.{current}</div>
+        <div className="shop-item-desc">{maxed ? 'Maxed out!' : item.desc}</div>
+        <div className="shop-item-row">
+          <span className="shop-price">{maxed ? '' : <><strong>${item.price}</strong> | Next: {item.name}</>}</span>
+          <button className="shop-btn" onClick={()=>buy(type)} disabled={!canBuy}>{maxed ? 'MAX' : 'BUY'}</button>
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="game-screen">
-      <div className="game-topbar">
-        <button className="back-btn" onClick={onBack}>&larr; Back to Menu</button>
-        <div className="game-title">Photo Hunt</div>
-        <div className="hunt-stats">
-          <span>Time: <strong>{timeLeft}</strong>s</span>
-          <span>Found: <strong>{found.length}</strong>/3</span>
-        </div>
-      </div>
-      <div className="hunt-pair">
-        <div className="hunt-image-wrap">
-          <div className="hunt-canvas">
-            {renderShape('circle','','22%','28%')}
-            {renderShape('triangle','','18%','62%')}
-            {renderShape('square','','55%','22%')}
-            {renderShape('diamond','','50%','58%')}
-            {renderShape('star','','35%','45%')}
-            {renderShape('moon','','65%','75%')}
-            {renderShape('heart','','72%','40%')}
+    <div className="tycoon-wrap">
+      <div>
+        {/* HUD */}
+        <div className="tycoon-hud">
+          <div className="hud-item hud-gold">💰 Money: <strong>${money}</strong></div>
+          <div className="hud-item">⭐ Level {lvl} — {LEVELS.find(l=>l.level===lvl)?.title}</div>
+          <div className="hud-item" style={{flex:1,minWidth:'120px'}}>
+            <div className="hud-bar"><div className="hud-bar-fill" style={{width:progressPct+'%'}}></div></div>
           </div>
-          {zones.map(z => (
-            <div key={z.id}
-              className={"difference-zone" + (found.includes(z.id) ? " found" : "")}
-              style={{top:z.top,left:z.left}}
-              onClick={() => handleFound(z.id)}
-            ></div>
-          ))}
+          <div className="hud-item">Next: <strong>${nextLevel.xpNeed - totalEarned}</strong></div>
         </div>
-        <div className="hunt-image-wrap">
-          <div className="hunt-canvas">
-            {renderShape('circle', 'hidden', '22%', '28%')}
-            {renderShape('triangle','','18%','62%')}
-            {renderShape('square','','55%','22%')}
-            {renderShape('diamond','diff-color','50%','58%')}
-            {renderShape('star','','35%','45%')}
-            {renderShape('moon','','65%','75%')}
-            {renderShape('heart','diff-rotate','72%','40%')}
+
+        {/* Studio */}
+        <div className="tycoon-studio">
+          <div className="studio-stage">
+            {/* Backdrop */}
+            <div className="backdrop-swatch" style={{
+              background:['#1a1a2e','#16213e','#1e3a5f','#2d5a3d','#5a2d5a'][Math.min(bgLvl,4)],
+              opacity:.15 + bgLvl*.08
+            }}></div>
+            {/* Lights */}
+            <div className="stage-lights">
+              {lightLvl>=1 && <div className="light-beam on" style={{top:'5%',left:'20%',background:'#FFD700'}}></div>}
+              {lightLvl>=2 && <div className="light-beam on" style={{top:'5%',right:'20%',background:'#4dd0e1'}}></div>}
+              {lightLvl>=3 && <div className="light-beam on" style={{top:'0%',left:'50%',background:'#e040fb',transform:'translateX(-50%)'}}></div>}
+              {lightLvl>=4 && <div className="light-beam on" style={{bottom:'10%',left:'10%',background:'#FF6B6B'}}></div>}
+              {lightLvl>=5 && <div className="light-beam on" style={{bottom:'10%',right:'10%',background:'#FFD93D'}}></div>}
+            </div>
+            {/* Customer */}
+            {currentCustomer && (
+              <div className={"stage-customer"+(currentCustomer.happy===false?' angry':'')+(currentCustomer.happy!==null?' leaving':'')}>
+                {currentCustomer.icon}
+              </div>
+            )}
+            {/* Flash */}
+            <div className={"camera-flash"+(flash?' active':'')}></div>
+            {/* Review */}
+            {review && <div className={"review-bubble "+(review.type)+" show"}>{review.text}</div>}
           </div>
+
+          {/* Queue */}
+          <div className="queue-bar">
+            <span className="queue-label">Waiting</span>
+            {Array.from({length:maxQueue}).map((_,i)=>{
+              const c = queue[i];
+              return <div key={i} className={"queue-slot"+(c?' filled':'')}>{c?c.icon:''}</div>;
+            })}
+          </div>
+
+          <button className="snap-btn" onClick={takePhoto} disabled={!currentCustomer || snapping}>
+            {snapping ? 'Developing...' : currentCustomer ? '\uD83D\uDCF8 SNAP PHOTO' : 'Waiting for customer...'}
+          </button>
         </div>
       </div>
-      <div className="hunt-msg">
-        {timeLeft === 0 && found.length < 3 ? 'Time\'s up! Click Continue to go back.' : ''}
+
+      {/* Shop */}
+      <div className="tycoon-shop">
+        <div className="shop-title">🛒 Upgrades</div>
+        {renderUpgrade('lights','Lights','\uD83D\uDCA1')}
+        {renderUpgrade('backgrounds','Backgrounds','\uD83C\uDFA8')}
+        {renderUpgrade('studio','Studio','\uD83C\uDFE2')}
       </div>
-      <OverlayModal {...modal} onClose={() => { setModal(null); if (timeLeft===0) onBack(); }} />
+
+      {/* Toast */}
+      {toast && <Toast msg={toast.msg} type={toast.type} onDone={()=>setToast(null)} />}
     </div>
-  );
-}
-
-/* ---------- Main App ---------- */
-function GameHubApp() {
-  const [screen, setScreen] = useState('hub');
-  return (
-    <>
-      {screen === 'hub' && <HubScreen onSelect={setScreen} />}
-      {screen === 'action' && <ActionShotScreen onBack={() => setScreen('hub')} />}
-      {screen === 'hunt' && <PhotoHuntScreen onBack={() => setScreen('hub')} />}
-    </>
   );
 }
 
 const root = ReactDOM.createRoot(document.getElementById('react-game-root'));
-root.render(<GameHubApp />);
+root.render(<StudioTycoonApp />);
 </script>
 
 <!-- ===== PORTFOLIO STRIP ===== -->
