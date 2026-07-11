@@ -264,13 +264,29 @@
 
     <div class="hunt-pair" id="huntPair">
       <div class="hunt-image-wrap" id="leftWrap">
-        <img class="hunt-img" src="https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80" alt="Original" id="leftImg">
-        <div class="difference-zone" data-zone="1" style="top:25%;left:30%;" onclick="foundDiff(this)"></div>
-        <div class="difference-zone" data-zone="2" style="top:55%;left:65%;" onclick="foundDiff(this)"></div>
-        <div class="difference-zone" data-zone="3" style="top:40%;left:15%;" onclick="foundDiff(this)"></div>
+        <div class="hunt-canvas" id="leftCanvas">
+          <div class="hc-shape circle" style="top:22%;left:28%;"></div>
+          <div class="hc-shape triangle" style="top:18%;left:62%;"></div>
+          <div class="hc-shape square" style="top:55%;left:22%;"></div>
+          <div class="hc-shape diamond" style="top:50%;left:58%;"></div>
+          <div class="hc-shape star" style="top:35%;left:45%;"></div>
+          <div class="hc-shape moon" style="top:65%;left:75%;"></div>
+          <div class="hc-shape heart" style="top:72%;left:40%;"></div>
+        </div>
+        <div class="difference-zone" data-zone="1" style="top:22%;left:28%;" onclick="foundDiff(this)"></div>
+        <div class="difference-zone" data-zone="2" style="top:50%;left:58%;" onclick="foundDiff(this)"></div>
+        <div class="difference-zone" data-zone="3" style="top:72%;left:40%;" onclick="foundDiff(this)"></div>
       </div>
       <div class="hunt-image-wrap" id="rightWrap">
-        <img class="hunt-img" src="https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80" alt="Modified" id="rightImg">
+        <div class="hunt-canvas" id="rightCanvas">
+          <div class="hc-shape circle hidden" style="top:22%;left:28%;"></div>
+          <div class="hc-shape triangle" style="top:18%;left:62%;"></div>
+          <div class="hc-shape square" style="top:55%;left:22%;"></div>
+          <div class="hc-shape diamond diff-color" style="top:50%;left:58%;"></div>
+          <div class="hc-shape star" style="top:35%;left:45%;"></div>
+          <div class="hc-shape moon" style="top:65%;left:75%;"></div>
+          <div class="hc-shape heart diff-rotate" style="top:72%;left:40%;"></div>
+        </div>
       </div>
     </div>
 
@@ -381,6 +397,36 @@
 }
 
 /* ===== PHOTO HUNT ===== */
+.hunt-canvas{
+  position:relative;width:100%;aspect-ratio:4/3;border-radius:10px;overflow:hidden;
+  background:linear-gradient(135deg,#1a1a2e,#16213e);
+}
+.hc-shape{
+  position:absolute;width:48px;height:48px;transform:translate(-50%,-50%);
+  transition:all .3s ease;
+}
+/* Circle */
+.hc-shape.circle{border-radius:50%;background:linear-gradient(135deg,#FF6B6B,#ee5a5a);box-shadow:0 4px 15px rgba(255,107,107,.3)}
+.hc-shape.circle.hidden{opacity:0;pointer-events:none}
+/* Triangle */
+.hc-shape.triangle{width:0;height:0;border-left:24px solid transparent;border-right:24px solid transparent;border-bottom:42px solid #4ECDC4;filter:drop-shadow(0 4px 10px rgba(78,205,196,.3))}
+/* Square */
+.hc-shape.square{border-radius:8px;background:linear-gradient(135deg,#FFD93D,#f0c800);box-shadow:0 4px 15px rgba(255,217,61,.3)}
+/* Diamond */
+.hc-shape.diamond{width:36px;height:36px;transform:translate(-50%,-50%) rotate(45deg);background:linear-gradient(135deg,#A8E6CF,#88d9b0);box-shadow:0 4px 15px rgba(168,230,207,.3)}
+.hc-shape.diamond.diff-color{background:linear-gradient(135deg,#FF8B94,#ff6b75)!important}
+/* Star (CSS) */
+.hc-shape.star{width:0;height:0;margin-left:24px;margin-top:24px;border-left:24px solid transparent;border-right:24px solid transparent;border-bottom:18px solid #C7CEEA;position:relative;filter:drop-shadow(0 4px 10px rgba(199,206,234,.3))}
+.hc-shape.star:before{content:'';position:absolute;left:-24px;top:18px;width:0;height:0;border-left:24px solid transparent;border-right:24px solid transparent;border-top:18px solid #C7CEEA}
+/* Moon */
+.hc-shape.moon{border-radius:50%;background:#F7DC6F;box-shadow:0 4px 15px rgba(247,220,111,.3)}
+.hc-shape.moon::after{content:'';position:absolute;width:36px;height:36px;border-radius:50%;background:#1a1a2e;top:-6px;left:10px}
+/* Heart */
+.hc-shape.heart{width:30px;height:26px;position:relative}
+.hc-shape.heart::before,.hc-shape.heart::after{content:'';position:absolute;width:18px;height:28px;border-radius:18px 18px 0 0;background:linear-gradient(135deg,#FF6B9D,#ee5a8a)}
+.hc-shape.heart::before{left:18px;transform:rotate(-45deg);transform-origin:0 100%}
+.hc-shape.heart::after{left:0;transform:rotate(45deg);transform-origin:100% 100%}
+.hc-shape.heart.diff-rotate{transform:translate(-50%,-50%) rotate(25deg)}
 .hunt-pair{
   display:grid;grid-template-columns:1fr 1fr;gap:16px;
 }
