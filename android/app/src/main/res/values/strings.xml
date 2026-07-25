@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Karosh Group</string>
+    <string name="title_activity_main">Karosh Group</string>
+    <string name="package_name">com.karoshgroup.app</string>
+    <string name="custom_url_scheme">com.karoshgroup.app</string>
+</resources>

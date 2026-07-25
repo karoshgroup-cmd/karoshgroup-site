@@ -1,0 +1,12 @@
+node_modules/
+www/
+.DS_Store
+
+# Native build artifacts (keep android/ios folders, ignore local build output)
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+ios/App/Pods/
+ios/App/build/
+*.xcuserstate
