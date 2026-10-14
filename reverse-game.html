@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ckb" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>یاری ڕیڤێرس | Karosh Studio</title>
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--tx:#1d1b18;--mu:#7a756c;--ac:#6d4aff;--ok:#1f9d63;--bd:#e4e0d8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15141a;--card:#201f27;--tx:#f1eff7;--mu:#9a96a8;--ac:#9a82ff;--ok:#3ccf8e;--bd:#33313d}}
+:root[data-theme="dark"]{--bg:#15141a;--card:#201f27;--tx:#f1eff7;--mu:#9a96a8;--ac:#9a82ff;--ok:#3ccf8e;--bd:#33313d}
+:root{--gold:#c9a24b}
+.brand{display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.2em;font-size:13px;direction:ltr;margin:6px 0 10px}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--gold)}.brand span:last-child{color:var(--mu)}
+.foot{display:block;text-align:center;color:var(--mu);font-size:13px;margin:22px 0 8px;text-decoration:none}.foot b{color:var(--gold)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;font-size:17px}
+main{max-width:480px;margin:0 auto;padding:16px}
+h1{font-size:24px;margin:8px 0 4px}h2{font-size:20px;margin:8px 0}
+p{color:var(--mu);margin:6px 0 14px;line-height:1.6}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px;margin:12px 0}
+button,select,input{font:inherit;color:inherit}
+button{width:100%;padding:14px;border-radius:12px;border:1px solid var(--bd);background:var(--card);margin:6px 0;cursor:pointer}
+button.p{background:var(--ac);color:#fff;border:0;font-weight:700}
+button.g{background:var(--ok);color:#fff;border:0;font-weight:700}
+button.on{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--card));font-weight:700}
+button:disabled{opacity:.5}
+input,select{width:100%;padding:13px;border-radius:12px;border:1px solid var(--bd);background:var(--card);margin:6px 0}
+.row{display:flex;gap:8px}.row>*{flex:1}.row .s{flex:0 0 90px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--bg);border:1px solid var(--bd);border-radius:20px;padding:6px 12px}
+.big{font-size:34px;text-align:center;font-weight:800;padding:18px 0}
+.sc{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bd)}
+.err{color:#d93f3f}
+.pulse{animation:pl 1s infinite}@keyframes pl{50%{opacity:.4}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+const KU=["سڵاو","ماڵ","ئاو","نان","دار","شار","دڵ","ئاسمان","کتێب","مەنجەڵ","خۆر","مانگ","کچ","کوڕ","دەست","چاو","باخ","گوڵ","پیاو","ژن","شەو","ڕۆژ","بەفر","باران","کوردستان","قاوە","چا","مۆبایل","ئۆتۆمبێل","فرۆکە"];
+const EN=["hello","apple","water","house","music","banana","mobile","friend","dragon","pizza","garden","window","rocket","coffee","summer","winter","monkey","pencil","cookie","planet","football","chicken","holiday","camera","tiger","dinner","guitar","sunshine","rainbow","keyboard"];
+const LANGS=[["ckb","کوردی"],["ar","عەرەبی"],["fa","فارسی"],["tr","تورکی"],["en","English"]];
+let S={screen:"setup",players:[],lang:"ckb",turn:0,scores:{},mode:null,word:null,fwd:null,rev:null,revealed:false,checked:{},busy:"",msg:"",rec:null,showWord:true,peek:false,tryRec:null,tryRev:null};
+const $=id=>document.getElementById(id);
+const e=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let ctx,cur;
+function ac(){ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==="suspended")ctx.resume();return ctx}
+function play(b){try{cur&&cur.stop()}catch(_){}cur=ac().createBufferSource();cur.buffer=b;cur.connect(ac().destination);cur.start()}
+let MS;
+async function getMic(){if(MS&&MS.getTracks().some(t=>t.readyState==="live"))return MS;MS=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});return MS}
+const WSRC='class R extends AudioWorkletProcessor{constructor(){super();this.b=[];this.n=0;this.port.onmessage=()=>{this.port.postMessage(this.b);this.b=[];this.n=0;this.port.postMessage("done")}}process(i){const c=i[0][0];if(c){this.b.push(new Float32Array(c));this.n+=c.length;if(this.n>=4096){this.port.postMessage(this.b);this.b=[];this.n=0}}return true}}registerProcessor("rec",R)';
+let WL=false;
+async function startRec(){
+  const st=await getMic(),c=ac(),src=c.createMediaStreamSource(st),mute=c.createGain(),ch=[];mute.gain.value=0;
+  let node=null,done=null;
+  if(c.audioWorklet&&window.AudioWorkletNode){
+    try{
+      if(!WL){await c.audioWorklet.addModule(URL.createObjectURL(new Blob([WSRC],{type:"application/javascript"})));WL=true}
+      node=new AudioWorkletNode(c,"rec");
+      node.port.onmessage=e=>{if(e.data==="done"){done&&done()}else e.data.forEach(a=>ch.push(a))};
+    }catch(_){node=null}
+  }
+  if(!node){node=c.createScriptProcessor(4096,1,1);node.onaudioprocess=ev=>ch.push(new Float32Array(ev.inputBuffer.getChannelData(0)))}
+  src.connect(node);node.connect(mute);mute.connect(c.destination);
+  return{stop:async()=>{
+    if(node.port)await new Promise(r=>{done=r;node.port.postMessage("f");setTimeout(r,700)});else node.onaudioprocess=null;
+    try{src.disconnect();node.disconnect();mute.disconnect()}catch(_){}
+    let n=0;ch.forEach(a=>n+=a.length);const d=new Float32Array(n);let o=0;ch.forEach(a=>{d.set(a,o);o+=a.length});
+    if(n<2000)throw new Error("short");const b=c.createBuffer(1,n,c.sampleRate);b.copyToChannel(d,0);return b}};
+}
+
+const KS=[" ","\n","!",'"',"-",".",":","،","؛","؟","ء","ا","ب","ت","ج","ح","خ","د","ر","ز","س","ش","ع","غ","ف","ق","ل","م","ن","ه","و","ي","\u0654","پ","چ","ڕ","ژ","ڤ","ک","گ","ڵ","ۆ","ی","ێ","ە"];
+const MURL="https://huggingface.co/RevgeAI/vekol-tts-ckb-edge/resolve/main/model.onnx",ORTV="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/";
+let SES;
+const kuNorm=t=>t.replace(/ك/g,"ک").replace(/[يى]/g,"ی").replace(/ھ/g,"ه").replace(/ة/g,"ە").replace(/[\u200c\u200d\u0640]/g,"").normalize("NFD");
+function kuIds(t){const ids=[1];for(const ch of kuNorm(t)){const i=KS.indexOf(ch);if(i>=0)ids.push(i+3,0)}ids.push(2);return ids}
+const prog=m=>{S.busy=m;const b=$("bz");if(b)b.textContent=m};
+async function loadKu(){
+  if(SES)return SES;
+  if(!window.ort){await new Promise((ok,no)=>{const x=document.createElement("script");x.src=ORTV+"ort.min.js";x.onload=ok;x.onerror=()=>no(new Error("ort"));document.head.appendChild(x)})}
+  ort.env.wasm.numThreads=1;ort.env.wasm.wasmPaths=ORTV;
+  let buf;
+  try{const c=await caches.open("ku-tts"),m=await c.match(MURL);if(m)buf=await m.arrayBuffer()}catch(_){}
+  if(!buf){
+    const r=await fetch(MURL);if(!r.ok)throw new Error("download "+r.status);
+    const tot=+r.headers.get("content-length")||77100000,rd=r.body.getReader(),parts=[];let got=0;
+    for(;;){const{done,value}=await rd.read();if(done)break;parts.push(value);got+=value.length;prog("داگرتنی دەنگی ئەی ئای (تەنها یەکجار): "+Math.min(99,Math.round(got/tot*100))+"%")}
+    const u=new Uint8Array(got);let o=0;for(const q of parts){u.set(q,o);o+=q.length}buf=u.buffer;
+    try{const c=await caches.open("ku-tts");await c.put(MURL,new Response(buf.slice(0)))}catch(_){}
+  }
+  prog("ئامادەکردنی دەنگ...");
+  SES=await ort.InferenceSession.create(buf,{executionProviders:["wasm"]});return SES}
+let KOK;
+async function synthEn(text){
+  if(!KOK){
+    const m=await import("https://cdn.jsdelivr.net/npm/kokoro-js@1.2.1/dist/kokoro.web.js");
+    KOK=await m.KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-v1.0-ONNX",{dtype:"q8",device:"wasm",progress_callback:q=>{if(q&&q.status==="progress")prog("داگرتنی دەنگی ئینگلیزی (یەکجار): "+Math.round(q.progress)+"%")}});
+  }
+  prog("دەنگ دروست دەکرێت...");
+  const a=await KOK.generate(text,{voice:"af_heart"});
+  const b=ac().createBuffer(1,a.audio.length,a.sampling_rate);b.copyToChannel(Float32Array.from(a.audio),0);
+  if(peak(b)<0.01)throw new Error("silent");return b}
+async function synthKu(text){
+  const ids=kuIds(text);if(ids.length<4)throw new Error("وشەکە بە کوردی بنووسە");
+  const ses=await loadKu();prog("دەنگ دروست دەکرێت...");await sleep(50);
+  const f={};
+  for(const n of ses.inputNames){
+    if(n==="input")f[n]=new ort.Tensor("int64",BigInt64Array.from(ids.map(BigInt)),[1,ids.length]);
+    else if(n==="input_lengths")f[n]=new ort.Tensor("int64",BigInt64Array.from([BigInt(ids.length)]),[1]);
+    else if(n==="scales")f[n]=new ort.Tensor("float32",Float32Array.from([0.667,1,0.8]),[3]);
+    else if(n==="sid")f[n]=new ort.Tensor("int64",BigInt64Array.from([0n]),[1]);
+  }
+  const out=await ses.run(f),a=out[ses.outputNames[0]].data;
+  const b=ac().createBuffer(1,a.length,22050);b.copyToChannel(Float32Array.from(a),0);
+  if(peak(b)<0.01)throw new Error("silent");return b}
+function peak(b){const d=b.getChannelData(0);let m=0;for(let i=0;i<d.length;i+=16){const v=Math.abs(d[i]);if(v>m)m=v}return m}
+function proc(buf,mic){
+  let d=buf.getChannelData(0);const sr=buf.sampleRate,w=Math.floor(sr*0.02);
+  if(mic&&d.length>sr)d=d.subarray(0,d.length-Math.floor(sr*0.1));
+  let mx=0;for(let i=0;i<d.length;i+=4){const v=Math.abs(d[i]);if(v>mx)mx=v}
+  const th=Math.max(0.004,mx*0.03);
+  const rms=i=>{let q=0;const e=Math.min(d.length,i+w);for(let k=i;k<e;k++)q+=d[k]*d[k];return Math.sqrt(q/Math.max(1,e-i))};
+  let a=0;while(a<d.length-w&&rms(a)<th)a+=w;
+  let t=d.length-w;while(t>a&&rms(t)<th)t-=w;
+  a=Math.max(0,a-Math.floor(sr*0.08));t=Math.min(d.length,t+w+Math.floor(sr*0.12));
+  const sl=Float32Array.from(d.subarray(a,t));let pk=0;for(let i=0;i<sl.length;i++){const v=Math.abs(sl[i]);if(v>pk)pk=v}
+  const g=pk>0?0.9/pk:1,fd=Math.min(Math.floor(sr*0.01),sl.length>>1);
+  for(let i=0;i<sl.length;i++){let m=g;if(i<fd)m*=i/fd;else if(i>sl.length-fd)m*=(sl.length-i)/fd;sl[i]*=m}
+  const f=ac().createBuffer(1,sl.length,sr),r=ac().createBuffer(1,sl.length,sr);
+  f.copyToChannel(sl,0);r.copyToChannel(sl.slice().reverse(),0);return{f,r};
+}
+function speak(text){return new Promise(res=>{
+  const u=new SpeechSynthesisUtterance(text);u.lang=S.lang;u.rate=.85;
+  const v=speechSynthesis.getVoices().find(v=>v.lang&&v.lang.toLowerCase().startsWith(S.lang));if(v)u.voice=v;
+  u.onend=u.onerror=()=>res();speechSynthesis.cancel();speechSynthesis.speak(u);setTimeout(res,9000);
+})}
+const rand=()=>{const l=S.lang==="en"?EN:KU;return l[Math.floor(Math.random()*l.length)]};
+const cur_=()=>S.players[S.turn];
+function addPlayer(){const v=$("pn").value.trim();if(v&&S.players.length<30&&!S.players.includes(v))S.players.push(v);render();$("pn")&&$("pn").focus()}
+function rm(i){S.players.splice(i,1);render()}
+function setLang(v){S.lang=v}
+function start(){S.scores={};S.players.forEach(p=>S.scores[p]=0);S.turn=0;S.screen="choose";S.msg="";render()}
+function pick(m){S.showWord=false;S.mode=m;S.word=m==="preset"?rand():null;S.msg="";S.screen="input";render()}
+function another(){S.word=rand();S.showWord=false;render()}
+async function finish(buf,text,mic){const p=proc(buf,mic);S.fwd=p.f;S.rev=p.r;S.word=text;S.screen="listen";S.revealed=false;S.checked={};S.peek=false;S.tryRev=null;S.msg="";S.busy="";render();play(S.rev)}
+async function go(){
+  try{
+    ac();if(window.speechSynthesis&&S.mode!=="speak"){speechSynthesis.cancel();const u0=new SpeechSynthesisUtterance(" ");u0.volume=0;speechSynthesis.speak(u0)}
+    if(S.mode==="speak"){
+      if(!S.rec){S.rec=await startRec();S.busy="rec";render();return}
+      const r=S.rec;S.rec=null;S.busy="پرۆسێس...";render();return finish(await r.stop(),null,true);
+    }
+    const text=S.mode==="preset"?S.word:$("tw").value.trim();
+    if(!text){S.msg="وشەیەک بنووسە";render();return}
+    if(S.lang==="ckb"||S.lang==="en"){
+      try{prog("دەنگی ئەی ئای ئامادە دەکرێت...");S.msg="";S.showWord=false;render();const a=await(S.lang==="en"?synthEn(text):synthKu(text));return finish(a,text)}
+      catch(x){S.busy="";S.msg="دەنگی ئەی ئای کار نەکرد ("+((x&&x.message)||x)+"). ڕێگای مایک بەکاردێت.";console.error(x)}
+    }
+    S.busy="مۆبایلەکە وشەکە دەڵێت و تۆمار دەکات...";S.msg="";S.showWord=false;render();
+    const r=await startRec();await sleep(500);await speak(text);await sleep(700);const b=await r.stop();
+    if(peak(b)<0.03){S.busy="";S.msg="دەنگەکە تۆمار نەکرا. دەنگی مۆبایل بەرزتر بکەرەوە، لە شوێنی بێدەنگ بە، یان لە خوارەوە زمانێکی تر هەڵبژێرە.";render();return}
+    finish(b,text);
+  }catch(x){S.busy="";S.rec=null;S.msg="مایکرۆفۆن کار ناکات ("+((x&&x.name)||"؟")+"). لینکەکە لە Safari بکەرەوە و ڕێگەی مایک بدە.";render()}
+}
+function tog(i,v){S.checked[i]=S.checked[i]===v?0:v;render()}
+async function tryGo(){try{if(!S.tryRec){S.tryRec=await startRec();render();return}const r=S.tryRec;S.tryRec=null;const b=await r.stop();S.tryRev=proc(b,true).r;render();play(S.tryRev)}catch(x){S.tryRec=null;S.msg="مایکرۆفۆن کار ناکات ("+((x&&x.name)||"؟")+")";render()}}
+function reveal(){S.revealed=true;render()}
+function next(){
+  const others=S.players.filter((_,i)=>i!==S.turn);
+  if(S.players.length>1){
+    let n=0;S.players.forEach((p,i)=>{if(S.checked[i]){S.scores[p]+=S.checked[i];n++}});
+    if(S.mode!=="preset"&&others.length&&n===others.length)S.scores[cur_()]++;
+    S.turn=(S.turn+1)%S.players.length;
+  }
+  S.screen="choose";render();
+}
+function end(){S.screen="final";render()}
+function back(){S.screen="choose";S.rec=null;S.busy="";render()}
+function board(){return S.players.length>1?'<div class="card"><b>خاڵەکان</b>'+S.players.slice().sort((a,b)=>S.scores[b]-S.scores[a]).map(p=>`<div class="sc"><span>${e(p)}</span><b>${S.scores[p]}</b></div>`).join("")+"</div>":""}
+function render(){
+  const A=$("app"),n=S.players.length;let h="";
+  if(S.screen==="setup"){
+    h=`<h1>🔁 یاری ڕیڤێرس</h1><p style="margin-top:0;color:var(--gold)">دروستکراوی ستودیۆی کارۆش</p><p>وشەیەک دەڵێیت، دەنگەکەی پێچەوانە دەکرێتەوە، و ئەوانی تر دەبێت بزانن چ وشەیەک بوو.</p>
+    <div class="card"><b>یاریزانەکان</b><div class="row"><input id="pn" placeholder="ناوی یاریزان" onkeydown="if(event.key==='Enter')addPlayer()"><button class="s" onclick="addPlayer()">+ زیاد</button></div>
+    <div class="chips">${S.players.map((p,i)=>`<span class="chip">${e(p)} <a onclick="rm(${i})">✕</a></span>`).join("")}</div>
+    <p style="margin-bottom:0">${n===0?"ناوێک زیاد بکە":n===1?"یەک یاریزان: وەرزش بەبێ خاڵ":n+" یاریزان"}</p></div>
+    <div class="card"><b>زمانی دەنگی مۆبایل</b><select onchange="setLang(this.value)">${LANGS.map(l=>`<option value="${l[0]}" ${l[0]===S.lang?"selected":""}>${l[1]}</option>`).join("")}</select></div>
+    <button class="p" ${n?"":"disabled"} onclick="start()">دەستپێکردن</button>`;
+  }else if(S.screen==="choose"){
+    h=`<h1>${n>1?"نۆبەی "+e(cur_())+" 🎤":"🎤 وشەیەک هەڵبژێرە"}</h1><p>چۆن دەتەوێت وشەکە دابنێیت؟</p>
+    <button class="p" onclick="pick('preset')">🎲 وشەی ئامادە</button>
+    <button class="p" onclick="pick('typed')">⌨️ وشە بنووسە</button>
+    <button class="p" onclick="pick('speak')">🗣️ خۆم دەیڵێم</button>${board()}
+    <button onclick="end()">کۆتایی یاری</button>`;
+  }else if(S.screen==="input"){
+    const m=S.mode;
+    h=`<h2>${m==="preset"?"وشەی ئامادە":m==="typed"?"وشە بنووسە":"خۆت بیڵێ"}</h2>`+
+    (m==="preset"?`<div class="card"><p style="margin:0">وشەکە شاراوەیە. مۆبایلەکە دەیڵێت؛ هەر کاتێک ویستت پیشانی بدە.</p><div class="big">${S.showWord?e(S.word):"• • •"}</div><button onclick="S.showWord=!S.showWord;render()">👁 ${S.showWord?"شاردنەوەی وشە":"پیشاندانی وشە"}</button><button onclick="another()" ${S.busy?"disabled":""}>🔄 وشەیەکی تر</button></div>`:"")+
+    (m==="typed"?`<input id="tw" placeholder="وشەکە لێرە بنووسە" autocomplete="off">`:"")+
+    (m==="speak"?`<p>دوگمەکە دابگرە بۆ تۆمارکردن، وشەکە بڵێ، و دووبارە دایبگرە بۆ وەستان.</p>`:`${(S.lang==="ckb"||S.lang==="en")?"<p>دەنگی ئەی ئای وشەکە دروست دەکات و تەنها ڕیڤێرسەکە دەلێت. یەکەم جار دادەبەزێت (کوردی ٧٧ و ئینگلیزی نزیکەی ٩٠ مێگابایت، ئینتەرنێت پێویستە).</p>":"<p>دەنگی مۆبایل بەرز بکەرەوە و لە شوێنێکی بێدەنگ بە. مۆبایلەکە وشەکە دەڵێت و خۆی تۆماری دەکات.</p>"}<select onchange="setLang(this.value)">${LANGS.map(l=>`<option value="${l[0]}" ${l[0]===S.lang?"selected":""}>${l[1]}</option>`).join("")}</select>`)+
+    `<button id="bz" class="${S.busy==="rec"?"g":"p"}" onclick="go()" ${S.busy&&S.busy!=="rec"?"disabled":""}>${S.busy==="rec"?'<span class="pulse">⏹ وەستان و ڕیڤێرس</span>':S.busy?e(S.busy):m==="speak"?"⏺ دەست بکە بە تۆمارکردن":"🔁 ڕیڤێرس بکە"}</button>
+    ${S.msg?`<p class="err">${e(S.msg)}</p>`:""}<button onclick="back()">گەڕانەوە</button>`;
+  }else if(S.screen==="listen"){
+    const others=S.players.map((p,i)=>[p,i]).filter(x=>S.mode==="preset"||x[1]!==S.turn);
+    h=`<h2>گوێ بگرن و بزانن 👂</h2><button class="p" onclick="play(S.rev)">▶ دەنگی ڕیڤێرس</button>`;
+    if(!S.revealed){if(S.word){h+=`<button onclick="S.peek=!S.peek;render()">🙈 قسەکەر: ${S.peek?"شاردنەوە":"بینینی وشە"}</button>`;if(S.peek)h+=`<div class="big">${e(S.word)}</div>`}h+=`<button onclick="reveal()">👁 وشەکە بۆ هەمووان پیشان بدە</button>`}
+    else{
+      h+=`<div class="card">${S.word?`<div class="big">${e(S.word)}</div>`:"<p>وشەکە خۆت گوتت:</p>"}<button onclick="play(S.fwd)">▶ دەنگی ڕاستەقینە</button></div>`;
+      h+=`<div class="card"><b>🎯 هەوڵی ڕیڤێرس</b><p>یاریزانێک وشەکە بە پێچەوانە دەڵێت. دەنگەکەی ڕیڤێرس دەکرێتەوە، ئەگەر وشە ڕاستەکە لێ دەرچوو ٢ خاڵ وەردەگرێت.</p><button class="${S.tryRec?"g":"p"}" onclick="tryGo()">${S.tryRec?"⏹ وەستان":"⏺ تۆمارکردن"}</button>${S.tryRev?'<button onclick="play(S.tryRev)">▶ گوێ بگرە لە ئەنجام</button>':""}${S.msg?`<p class="err">${e(S.msg)}</p>`:""}</div>`;
+      if(n>1)h+=`<div class="card"><b>کێ زانی؟</b>${others.map(([p,i])=>`<div style="margin-top:8px">${e(p)}<div class="row"><button class="${S.checked[i]===1?"on":""}" onclick="tog(${i},1)">✅ زانی (١)</button><button class="${S.checked[i]===2?"on":""}" onclick="tog(${i},2)">🔁 ڕیڤێرس (٢)</button></div></div>`).join("")}</div>`;
+      h+=`<button class="g" onclick="next()">${n>1?"تۆمارکردنی خاڵ و نۆبەی داهاتوو":"خولی نوێ"}</button>`;
+    }
+  }else{
+    h=`<h1>🏆 ئەنجام</h1>${n>1?board():"<p>باش بوو!</p>"}<button class="p" onclick="S.screen='setup';render()">یاری نوێ</button>`;
+  }
+  A.innerHTML='<div class="brand"><span class="dot"></span><b>KAROSH</b><span>STUDIO</span></div>'+h+'<a class="foot" href="https://karoshgroup.com" target="_blank" rel="noopener">دروستکراوی <b>ستودیۆی کارۆش</b> · Karosh Studio</a>';
+}
+if(window.speechSynthesis)speechSynthesis.getVoices();
+render();
+</script>
+</body>
+</html>
