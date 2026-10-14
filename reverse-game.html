@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>یاری ڕیڤێرس | Karosh Studio</title>
-<!-- ڕێکخستنی تایبەت بە ئەپ بۆ ئایفۆن -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="یاری ڕیڤێرس">
@@ -74,10 +73,9 @@ async function getMic(){
   if(MS&&MS.getTracks().some(t=>t.readyState==="live"))return MS;
   MS=await navigator.mediaDevices.getUserMedia({
     audio:{
-      echoCancellation:true,
-      noiseSuppression:true,
-      autoGainControl:true,
-      channelCount:1
+      echoCancellation:false,
+      noiseSuppression:false,
+      autoGainControl:false
     }
   });
   return MS;
@@ -108,7 +106,7 @@ async function startRec(){
       let n=0;ch.forEach(a=>n+=a.length);
       const d=new Float32Array(n);
       let o=0;ch.forEach(a=>{d.set(a,o);o+=a.length});
-      if(n<c.sampleRate*0.3)throw new Error("short");
+      if(n<c.sampleRate*0.2)throw new Error("short");
       const b=c.createBuffer(1,n,c.sampleRate);
       b.copyToChannel(d,0);
       return b;
@@ -116,104 +114,38 @@ async function startRec(){
   };
 }
 
-const KS=[" ","\n","!",'"',"-",".",":","،","؛","؟","ء","ا","ب","ت","ج","ح","خ","د","ر","ز","س","ش","ع","غ","ف","ق","ل","م","ن","ه","و","ي","\u0654","پ","چ","ڕ","ژ","ڤ","ک","گ","ڵ","ۆ","ی","ێ","ە"];
-const MURL="https://huggingface.co/RevgeAI/vekol-tts-ckb-edge/resolve/main/model.onnx",ORTV="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/";
-let SES;
-const kuNorm=t=>t.replace(/ك/g,"ک").replace(/[يى]/g,"ی").replace(/ھ/g,"ه").replace(/ة/g,"ە").replace(/[\u200c\u200d\u0640]/g,"").normalize("NFD");
-function kuIds(t){const ids=[1];for(const ch of kuNorm(t)){const i=KS.indexOf(ch);if(i>=0)ids.push(i+3,0)}ids.push(2);return ids}
-const prog=m=>{S.busy=m;const b=$("bz");if(b)b.textContent=m};
-
-async function loadKu(){
-  if(SES)return SES;
-  if(!window.ort){await new Promise((ok,no)=>{const x=document.createElement("script");x.src=ORTV+"ort.min.js";x.onload=ok;x.onerror=()=>no(new Error("ort"));document.head.appendChild(x)})}
-  ort.env.wasm.numThreads=1;ort.env.wasm.wasmPaths=ORTV;
-  let buf;
-  try{const c=await caches.open("ku-tts"),m=await c.match(MURL);if(m)buf=await m.arrayBuffer()}catch(_){}
-  if(!buf){
-    const r=await fetch(MURL);if(!r.ok)throw new Error("download "+r.status);
-    const tot=+r.headers.get("content-length")||77100000,rd=r.body.getReader(),parts=[];let got=0;
-    for(;;){const{done,value}=await rd.read();if(done)break;parts.push(value);got+=value.length;prog("داگرتنی دەنگی کوردی (تەنها یەکجار): "+Math.min(99,Math.round(got/tot*100))+"%")}
-    const u=new Uint8Array(got);let o=0;for(const q of parts){u.set(q,o);o+=q.length}buf=u.buffer;
-    try{const c=await caches.open("ku-tts");await c.put(MURL,new Response(buf.slice(0)))}catch(_){}
-  }
-  prog("ئامادەکردنی دەنگ...");
-  SES=await ort.InferenceSession.create(buf,{executionProviders:["wasm"]});return SES}
-
-let KOK;
-async function synthEn(text){
-  if(!KOK){
-    const m=await import("https://cdn.jsdelivr.net/npm/kokoro-js@1.2.1/dist/kokoro.web.js");
-    KOK=await m.KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-v1.0-ONNX",{dtype:"q8",device:"wasm",progress_callback:q=>{if(q&&q.status==="progress")prog("داگرتنی دەنگی ئینگلیزی (یەکجار): "+Math.round(q.progress)+"%")}});
-  }
-  prog("دەنگ دروست دەکرێت...");
-  const a=await KOK.generate(text,{voice:"af_heart"});
-  const b=ac().createBuffer(1,a.audio.length,a.sampling_rate);
-  b.copyToChannel(Float32Array.from(a.audio),0);
-  if(peak(b)<0.01)throw new Error("silent");
-  return b;
-}
-
-async function synthKu(text){
-  const ids=kuIds(text);if(ids.length<4)throw new Error("وشەکە بە کوردی بنووسە");
-  const ses=await loadKu();prog("دەنگ دروست دەکرێت...");await sleep(50);
-  const f={};
-  for(const n of ses.inputNames){
-    if(n==="input")f[n]=new ort.Tensor("int64",BigInt64Array.from(ids.map(BigInt)),[1,ids.length]);
-    else if(n==="input_lengths")f[n]=new ort.Tensor("int64",BigInt64Array.from([BigInt(ids.length)]),[1]);
-    else if(n==="scales")f[n]=new ort.Tensor("float32",Float32Array.from([0.667,1,0.8]),[3]);
-    else if(n==="sid")f[n]=new ort.Tensor("int64",BigInt64Array.from([0n]),[1]);
-  }
-  const out=await ses.run(f),a=out[ses.outputNames[0]].data;
-  const b=ac().createBuffer(1,a.length,22050);
-  b.copyToChannel(Float32Array.from(a),0);
-  if(peak(b)<0.01)throw new Error("silent");
-  return b;
-}
-
-function peak(b){
-  const d=b.getChannelData(0);let m=0;
-  for(let i=0;i<d.length;i+=16){const v=Math.abs(d[i]);if(v>m)m=v}
-  return m;
-}
-
-// ئەلگۆریتمی چاککراو بۆ پاککردنەوە و ڕیڤێرسکردنی دەنگ بەبێ خشە و تێکچوون
-function proc(buf,mic){
+function proc(buf){
   const c=ac();
-  let d=buf.getChannelData(0);
+  const d=buf.getChannelData(0);
   const sr=buf.sampleRate;
   
+  // دۆزینەوەی بەرزترین ئاستی دەنگ
   let mx=0;
-  for(let i=0;i<d.length;i+=8){const v=Math.abs(d[i]);if(v>mx)mx=v}
+  for(let i=0;i<d.length;i+=4){const v=Math.abs(d[i]);if(v>mx)mx=v}
   if(mx===0)mx=1;
 
-  // بڕینی بێدەنگی سەرەتا و کۆتایی بە شێوەیەکی نەرم
-  const th=Math.max(0.015,mx*0.06);
+  // بڕینی بەشە بێدەنگەکانی سەرەتا و کۆتایی بەبێ خواردنی پیتەکان
+  const th=Math.max(0.008,mx*0.03);
   let start=0;
   while(start<d.length&&Math.abs(d[start])<th)start++;
-  start=Math.max(0,start-Math.floor(sr*0.04));
+  start=Math.max(0,start-Math.floor(sr*0.05));
 
   let end=d.length-1;
   while(end>start&&Math.abs(d[end])<th)end--;
-  end=Math.min(d.length,end+Math.floor(sr*0.05));
+  end=Math.min(d.length,end+Math.floor(sr*0.08));
 
-  const sl=new Float32Array(Math.max(1024,end-start));
+  const len=Math.max(1024,end-start);
+  const sl=new Float32Array(len);
   sl.set(d.subarray(start,end));
 
-  // هاوسەنگکردنی دەنگ (Normalize)
-  let pk=0;
-  for(let i=0;i<sl.length;i++){const v=Math.abs(sl[i]);if(v>pk)pk=v}
-  const g=pk>0?Math.min(1.0,0.88/pk):1;
-
-  // فەید بۆ نەهێشتنی دەنگی ترپە و تەقینەوە (De-clicking)
-  const fd=Math.min(Math.floor(sr*0.01),sl.length>>2);
-  for(let i=0;i<sl.length;i++){
-    let m=g;
-    if(i<fd)m*=i/fd;
-    else if(i>sl.length-fd)m*=(sl.length-i)/fd;
-    sl[i]*=m;
+  // پاراستنی دەنگە سروشتییەکە بەبێ دروستکردنی تەقە (De-clicking fade)
+  const fd=Math.min(128,sl.length>>2);
+  for(let i=0;i<fd;i++){
+    sl[i]*=(i/fd);
+    sl[sl.length-1-i]*=(i/fd);
   }
 
-  // دروستکردنی فایلی ئاسایی و پێچەوانە
+  // پێچەوانەکردنەوەی دەنگە ڕاستەقینەکە
   const f=c.createBuffer(1,sl.length,sr);
   const r=c.createBuffer(1,sl.length,sr);
   f.copyToChannel(sl,0);
@@ -231,13 +163,13 @@ function speak(text){
   return new Promise(res=>{
     const u=new SpeechSynthesisUtterance(text);
     u.lang=S.lang;
-    u.rate=0.85;
+    u.rate=0.82;
     const v=speechSynthesis.getVoices().find(v=>v.lang&&v.lang.toLowerCase().startsWith(S.lang));
     if(v)u.voice=v;
     u.onend=u.onerror=()=>res();
     speechSynthesis.cancel();
     speechSynthesis.speak(u);
-    setTimeout(res,8000);
+    setTimeout(res,6000);
   });
 }
 
@@ -256,8 +188,8 @@ function start(){S.scores={};S.players.forEach(p=>S.scores[p]=0);S.turn=0;S.scre
 function pick(m){S.showWord=false;S.mode=m;S.word=m==="preset"?rand():null;S.msg="";S.screen="input";render()}
 function another(){S.word=rand();S.showWord=false;render()}
 
-async function finish(buf,text,mic){
-  const p=proc(buf,mic);
+async function finish(buf,text){
+  const p=proc(buf);
   S.fwd=p.f;
   S.rev=p.r;
   S.word=text;
@@ -275,12 +207,6 @@ async function finish(buf,text,mic){
 async function go(){
   try{
     ac();
-    if(window.speechSynthesis&&S.mode!=="speak"){
-      speechSynthesis.cancel();
-      const u0=new SpeechSynthesisUtterance(" ");
-      u0.volume=0;
-      speechSynthesis.speak(u0);
-    }
     if(S.mode==="speak"){
       if(!S.rec){
         S.rec=await startRec();
@@ -293,44 +219,25 @@ async function go(){
       S.busy="پرۆسێس...";
       render();
       const b=await r.stop();
-      return finish(b,null,true);
+      return finish(b,null);
     }
     const text=S.mode==="preset"?S.word:$("tw").value.trim();
     if(!text){S.msg="وشەیەک بنووسە";render();return}
-    if(S.lang==="ckb"||S.lang==="en"){
-      try{
-        prog("دەنگی ئەی ئای ئامادە دەکرێت...");
-        S.msg="";
-        S.showWord=false;
-        render();
-        const a=await(S.lang==="en"?synthEn(text):synthKu(text));
-        return finish(a,text,false);
-      }catch(x){
-        S.busy="";
-        S.msg="دەنگی ئەی ئای کار نەکرد ("+((x&&x.message)||x)+"). ڕێگای مایک بەکاردێت.";
-        console.error(x);
-      }
-    }
-    S.busy="مۆبایلەکە وشەکە دەڵێت و تۆمار دەکات...";
+    
+    S.busy="مۆبایلەکە وشەکە دەڵێت و تۆماری دەکات...";
     S.msg="";
     S.showWord=false;
     render();
     const r=await startRec();
-    await sleep(400);
+    await sleep(350);
     await speak(text);
-    await sleep(600);
+    await sleep(500);
     const b=await r.stop();
-    if(peak(b)<0.02){
-      S.busy="";
-      S.msg="دەنگەکە تۆمار نەکرا. دەنگی مۆبایل بەرزتر بکەرەوە، یان بڕۆ شوێنێکی بێدەنگتر.";
-      render();
-      return;
-    }
-    finish(b,text,true);
+    finish(b,text);
   }catch(x){
     S.busy="";
     S.rec=null;
-    S.msg="مایکرۆفۆن کار ناکات. لە Safari ڕێگەی دەستگەیشتن بە مایک بدە.";
+    S.msg="مایکرۆفۆن کار ناکات. لە سەفاری مۆڵەتی مایک بدە.";
     render();
   }
 }
@@ -347,7 +254,7 @@ async function tryGo(){
     const r=S.tryRec;
     S.tryRec=null;
     const b=await r.stop();
-    S.tryRev=proc(b,true).r;
+    S.tryRev=proc(b).r;
     render();
     play(S.tryRev);
   }catch(x){
@@ -384,20 +291,19 @@ function render(){
     <div class="card"><b>یاریزانەکان</b><div class="row"><input id="pn" placeholder="ناوی یاریزان" onkeydown="if(event.key==='Enter')addPlayer()"><button class="s" onclick="addPlayer()">+ زیاد</button></div>
     <div class="chips">${S.players.map((p,i)=>`<span class="chip">${e(p)} <a onclick="rm(${i})">✕</a></span>`).join("")}</div>
     <p style="margin-bottom:0">${n===0?"ناوێک زیاد بکە":n===1?"یەک یاریزان: وەرزش بەبێ خاڵ":n+" یاریزان"}</p></div>
-    <div class="card"><b>زمانی دەنگی مۆبایل</b><select onchange="setLang(this.value)">${LANGS.map(l=>`<option value="${l[0]}" ${l[0]===S.lang?"selected":""}>${l[1]}</option>`).join("")}</select></div>
     <button class="p" ${n?"":"disabled"} onclick="start()">دەستپێکردن</button>`;
   }else if(S.screen==="choose"){
     h=`<h1>${n>1?"نۆبەی "+e(cur_())+" 🎤":"🎤 وشەیەک هەڵبژێرە"}</h1><p>چۆن دەتەوێت وشەکە دابنێیت؟</p>
-    <button class="p" onclick="pick('preset')">🎲 وشەی ئامادە</button>
-    <button class="p" onclick="pick('typed')">⌨️ وشە بنووسە</button>
-    <button class="p" onclick="pick('speak')">🗣️ خۆم دەیڵێم</button>${board()}
+    <button class="p" onclick="pick('speak')">🗣️ خۆم بە دەنگ دەیڵێم (باشترینە)</button>
+    <button class="p" onclick="pick('preset')">🎲 وشەی ئامادەکراو</button>
+    <button class="p" onclick="pick('typed')">⌨️ وشە بنووسە</button>${board()}
     <button onclick="end()">کۆتایی یاری</button>`;
   }else if(S.screen==="input"){
     const m=S.mode;
     h=`<h2>${m==="preset"?"وشەی ئامادە":m==="typed"?"وشە بنووسە":"خۆت بیڵێ"}</h2>`+
-    (m==="preset"?`<div class="card"><p style="margin:0">وشەکە شاراوەیە. مۆبایلەکە دەیڵێت؛ هەر کاتێک ویستت پیشانی بدە.</p><div class="big">${S.showWord?e(S.word):"• • •"}</div><button onclick="S.showWord=!S.showWord;render()">👁 ${S.showWord?"شاردنەوەی وشە":"پیشاندانی وشە"}</button><button onclick="another()" ${S.busy?"disabled":""}>🔄 وشەیەکی تر</button></div>`:"")+
+    (m==="preset"?`<div class="card"><p style="margin:0">وشەکە شاراوەیە؛ هەر کاتێک ویستت پیشانی بدە.</p><div class="big">${S.showWord?e(S.word):"• • •"}</div><button onclick="S.showWord=!S.showWord;render()">👁 ${S.showWord?"شاردنەوەی وشە":"پیشاندانی وشە"}</button><button onclick="another()" ${S.busy?"disabled":""}>🔄 وشەیەکی تر</button></div>`:"")+
     (m==="typed"?`<input id="tw" placeholder="وشەکە لێرە بنووسە" autocomplete="off">`:"")+
-    (m==="speak"?`<p>دوگمەکە دابگرە بۆ تۆمارکردن، وشەکە بڵێ، و دووبارە دایبگرە بۆ وەستان.</p>`:`${(S.lang==="ckb"||S.lang==="en")?"<p>دەنگی ئەی ئای وشەکە دروست دەکات و تەنها ڕیڤێرسەکە دەلێت.</p>":"<p>دەنگی مۆبایل بەرز بکەرەوە و لە شوێنێکی بێدەنگ بە.</p>"}<select onchange="setLang(this.value)">${LANGS.map(l=>`<option value="${l[0]}" ${l[0]===S.lang?"selected":""}>${l[1]}</option>`).join("")}</select>`)+
+    (m==="speak"?`<p>دوگمەکە دابگرە، وشەکە بڵێ و ڕاستەوخۆ دایبگرەوە بۆ وەستان.</p>`:`<p>دەنگی مۆبایلەکەت بەرز بکەرەوە تا ڕوون ببیسترێت.</p>`)+
     `<button id="bz" class="${S.busy==="rec"?"g":"p"}" onclick="go()" ${S.busy&&S.busy!=="rec"?"disabled":""}>${S.busy==="rec"?'<span class="pulse">⏹ وەستان و ڕیڤێرس</span>':S.busy?e(S.busy):m==="speak"?"⏺ دەست بکە بە تۆمارکردن":"🔁 ڕیڤێرس بکە"}</button>
     ${S.msg?`<p class="err">${e(S.msg)}</p>`:""}<button onclick="back()">گەڕانەوە</button>`;
   }else if(S.screen==="listen"){
@@ -406,7 +312,7 @@ function render(){
     if(!S.revealed){if(S.word){h+=`<button onclick="S.peek=!S.peek;render()">🙈 قسەکەر: ${S.peek?"شاردنەوە":"بینینی وشە"}</button>`;if(S.peek)h+=`<div class="big">${e(S.word)}</div>`}h+=`<button onclick="reveal()">👁 وشەکە بۆ هەمووان پیشان بدە</button>`}
     else{
       h+=`<div class="card">${S.word?`<div class="big">${e(S.word)}</div>`:"<p>وشەکە خۆت گوتت:</p>"}<button onclick="play(S.fwd)">▶ دەنگی ڕاستەقینە</button></div>`;
-      h+=`<div class="card"><b>🎯 هەوڵی ڕیڤێرس</b><p>یاریزانێک وشەکە بە پێچەوانە دەڵێت. دەنگەکەی ڕیڤێرس دەکرێتەوە، ئەگەر وشە ڕاستەکە لێ دەرچوو ٢ خاڵ وەردەگرێت.</p><button class="${S.tryRec?"g":"p"}" onclick="tryGo()">${S.tryRec?"⏹ وەستان":"⏺ تۆمارکردن"}</button>${S.tryRev?'<button onclick="play(S.tryRev)">▶ گوێ بگرە لە ئەنجام</button>':""}${S.msg?`<p class="err">${e(S.msg)}</p>`:""}</div>`;
+      h+=`<div class="card"><b>🎯 هەوڵی ڕیڤێرس</b><p>یاریزانێک وشەکە بە پێچەوانە دەڵێتەوە بۆ تاقیکردنەوە:</p><button class="${S.tryRec?"g":"p"}" onclick="tryGo()">${S.tryRec?"⏹ وەستان":"⏺ تۆمارکردن"}</button>${S.tryRev?'<button onclick="play(S.tryRev)">▶ گوێ بگرە لە ئەنجام</button>':""}${S.msg?`<p class="err">${e(S.msg)}</p>`:""}</div>`;
       if(n>1)h+=`<div class="card"><b>کێ زانی؟</b>${others.map(([p,i])=>`<div style="margin-top:8px">${e(p)}<div class="row"><button class="${S.checked[i]===1?"on":""}" onclick="tog(${i},1)">✅ زانی (١)</button><button class="${S.checked[i]===2?"on":""}" onclick="tog(${i},2)">🔁 ڕیڤێرس (٢)</button></div></div>`).join("")}</div>`;
       h+=`<button class="g" onclick="next()">${n>1?"تۆمارکردنی خاڵ و نۆبەی داهاتوو":"خولی نوێ"}</button>`;
     }
