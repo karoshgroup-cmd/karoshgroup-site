@@ -10,12 +10,12 @@
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <style>
 :root{
-  --bg: radial-gradient(circle at 50% 0%, #1e1933 0%, #0d0c14 100%);
-  --card: rgba(28, 25, 41, 0.85);
+  --bg: radial-gradient(circle at 50% 0%, #221c3a 0%, #0d0b14 100%);
+  --card: rgba(30, 27, 46, 0.88);
   --tx: #f8f7fa;
-  --mu: #9e9bb0;
+  --mu: #a39fb8;
   --ac: #7952fc;
-  --ac-glow: rgba(121, 82, 252, 0.4);
+  --ac-glow: rgba(121, 82, 252, 0.45);
   --ok: #10b981;
   --bd: rgba(255, 255, 255, 0.1);
   --gold: #f59e0b;
@@ -35,16 +35,16 @@ body{
   font-size:16px;
   line-height:1.5;
 }
-main{max-width:440px;margin:0 auto;padding:16px 18px 40px}
+main{max-width:450px;margin:0 auto;padding:16px 18px 40px}
 
-.brand-header{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 0 6px;text-align:center}
+.brand-header{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0 6px;text-align:center}
 .brand-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,158,11,0.12);border:1px solid var(--gold);box-shadow:0 0 16px var(--gold-glow);padding:6px 18px;border-radius:30px;margin-bottom:8px}
 .brand-badge .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold)}
 .brand-badge span{font-size:13px;letter-spacing:0.18em;font-weight:800;color:#fff;direction:ltr}
 .brand-badge span b{color:var(--gold)}
 
-.hero-title{font-size:25px;font-weight:900;margin:6px 0 2px;background:linear-gradient(135deg,#fff,#c3b4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
-.hero-sub{color:var(--mu);font-size:14px;text-align:center;margin:0 0 16px}
+.hero-title{font-size:26px;font-weight:900;margin:4px 0 2px;background:linear-gradient(135deg,#fff,#d2c7ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
+.hero-sub{color:var(--mu);font-size:14px;text-align:center;margin:0 0 14px}
 
 .card{
   background:var(--card);
@@ -54,7 +54,7 @@ main{max-width:440px;margin:0 auto;padding:16px 18px 40px}
   border-radius:20px;
   padding:18px;
   margin:14px 0;
-  box-shadow:0 10px 25px rgba(0,0,0,0.35);
+  box-shadow:0 10px 28px rgba(0,0,0,0.4);
 }
 
 button,select,input{font:inherit;color:inherit}
@@ -70,14 +70,14 @@ button{
   background:rgba(255,255,255,0.06);
   font-weight:700;
   cursor:pointer;
-  transition:all .18s ease;
+  transition:transform .12s ease, background .2s ease;
   margin:8px 0;
 }
 button:active{transform:scale(0.98)}
 button.p{background:linear-gradient(135deg,#7952fc,#5e32ea);color:#fff;border:0;box-shadow:0 6px 18px var(--ac-glow)}
 button.g{background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:0;box-shadow:0 6px 18px rgba(16,185,129,0.3)}
-button.red{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;border:0;box-shadow:0 6px 18px rgba(239,68,68,0.4)}
-button.on{border-color:var(--ok);background:rgba(16,185,129,0.2);color:#34d399}
+button.red{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;border:0;box-shadow:0 6px 20px rgba(239,68,68,0.45)}
+button.on{border-color:var(--ok);background:rgba(16,185,129,0.22);color:#34d399}
 button:disabled{opacity:.45;cursor:not-allowed}
 
 input,select{
@@ -85,7 +85,7 @@ input,select{
   padding:14px;
   border-radius:14px;
   border:1px solid var(--bd);
-  background:rgba(0,0,0,0.3);
+  background:rgba(0,0,0,0.35);
   margin:8px 0;
   color:#fff;
   outline:none;
@@ -94,112 +94,267 @@ input:focus{border-color:var(--ac)}
 .row{display:flex;gap:10px}.row>*{flex:1}.row .s{flex:0 0 95px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .chip{background:rgba(255,255,255,0.08);border:1px solid var(--bd);border-radius:20px;padding:6px 14px;font-size:14px}
-.chip a{color:#ef4444;margin-right:6px;cursor:pointer}
+.chip a{color:#ef4444;margin-right:6px;cursor:pointer;font-weight:bold}
 
 .big-box{
   background:rgba(0,0,0,0.35);
-  border:2px dashed rgba(255,255,255,0.18);
+  border:2px dashed rgba(245,158,11,0.35);
   border-radius:16px;
   padding:20px;
   text-align:center;
   margin:12px 0;
 }
 .big{font-size:34px;font-weight:900;color:var(--gold);text-shadow:0 0 14px var(--gold-glow)}
+
+.meter-wrap{
+  height:14px;
+  background:rgba(0,0,0,0.4);
+  border-radius:10px;
+  overflow:hidden;
+  margin:12px 0;
+  border:1px solid var(--bd);
+}
+.meter-bar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#10b981,#f59e0b,#ef4444);
+  transition:width 0.06s linear;
+}
+
 .sc{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
-.pulse{animation:pl 1s infinite}@keyframes pl{50%{opacity:.3}}
+.pulse{animation:pl 1s infinite}@keyframes pl{50%{opacity:.35}}
 .foot{display:block;text-align:center;color:var(--mu);font-size:13px;margin:28px 0 10px;text-decoration:none}
 .foot b{color:var(--gold)}
 </style>
 </head>
 <body>
 <main id="app"></main>
+<audio id="audioPlayer" playsinline preload="auto" style="display:none"></audio>
 
 <script>
-const KU=["سڵاو","ماڵ","ئاو","نان","دار","شار","دڵ","ئاسمان","کتێب","خۆر","مانگ","کچ","کوڕ","دەست","چاو","باخ","گوڵ","پیاو","ژن","شەو","ڕۆژ","بەفر","باران","کوردستان","قاوە","چا","مۆبایل","فرۆکە","کامێرا"];
-let S={screen:"setup",players:[],turn:0,scores:{},mode:null,word:null,fwd:null,rev:null,revealed:false,checked:{},busy:"",msg:"",recObj:null,showWord:true,peek:false,tryRev:null};
+const KU=["سڵاو","ماڵ","ئاو","نان","دار","شار","دڵ","ئاسمان","کتێب","مەنجەڵ","خۆر","مانگ","کچ","کوڕ","دەست","چاو","باخ","گوڵ","پیاو","ژن","شەو","ڕۆژ","بەفر","باران","کوردستان","قاوە","چا","مۆبایل","ئۆتۆمبێل","فرۆکە","ستۆدیۆ","کامێرا","هەولێر"];
+
+let S={
+  screen:"setup",
+  players:[],
+  turn:0,
+  scores:{},
+  mode:null,
+  word:null,
+  fwdUrl:null,
+  revUrl:null,
+  revealed:false,
+  checked:{},
+  busy:"",
+  msg:"",
+  showWord:true,
+  peek:false,
+  tryRevUrl:null,
+  speed:1.0
+};
+
 const $=id=>document.getElementById(id);
 const e=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
-let audioCtx=null;
-function getCtx(){
-  if(!audioCtx){
-    const AudioCtx=window.AudioContext||window.webkitAudioContext;
-    audioCtx=new AudioCtx();
-  }
-  if(audioCtx.state==="suspended")audioCtx.resume();
-  return audioCtx;
+// فایلی بێدەنگی کورت بۆ کردنەوەی قفڵی دەنگی سەفاری لە ئایفۆن
+const SILENT_WAV="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
+
+function unlockAudioElement(){
+  const p=$("audioPlayer");
+  if(!p)return;
+  p.src=SILENT_WAV;
+  p.volume=1.0;
+  p.play().catch(()=>{});
 }
 
-let activeSource=null;
-function playBuffer(buf){
-  if(!buf)return;
-  const c=getCtx();
-  try{if(activeSource)activeSource.stop()}catch(_){}
-  activeSource=c.createBufferSource();
-  activeSource.buffer=buf;
-  activeSource.connect(c.destination);
-  activeSource.start(0);
+function playUrl(url, rate){
+  if(!url)return;
+  const p=$("audioPlayer");
+  p.pause();
+  p.src=url;
+  p.playbackRate=rate||S.speed||1.0;
+  p.currentTime=0;
+  p.play().catch(err=>{
+    S.msg="تکایە دوگمەی لێدان دابگرەوە ("+err.message+")";
+    render();
+  });
 }
 
-// سیستەمی بێ کێشەی تۆمارکردن تایبەت بە Safari و مۆبایل
-let micStream=null;
-async function startRecorder(){
-  const c=getCtx();
-  if(!micStream||!micStream.getTracks().some(t=>t.readyState==="live")){
-    micStream=await navigator.mediaDevices.getUserMedia({audio:true});
-  }
-  
-  const chunks=[];
-  let mediaRec;
-  try{
-    mediaRec=new MediaRecorder(micStream);
-  }catch(err){
-    mediaRec=new MediaRecorder(micStream,{mimeType:'audio/mp4'});
-  }
-  
-  mediaRec.ondataavailable=e=>{
-    if(e.data&&e.data.size>0)chunks.push(e.data);
+// گۆڕینی داتای خاو بۆ فایلی ستانداردی WAV 16-bit PCM (١٠٠٪ گونجاو لەگەڵ ئایفۆن)
+function encodeWAV(samples, sampleRate){
+  const buffer=new ArrayBuffer(44 + samples.length * 2);
+  const view=new DataView(buffer);
+  const writeString=(offset,str)=>{
+    for(let i=0;i<str.length;i++)view.setUint8(offset+i,str.charCodeAt(i));
   };
-  
-  mediaRec.start();
-  
-  return{
-    stop:()=>{
-      return new Promise((resolve,reject)=>{
-        mediaRec.onstop=async()=>{
-          try{
-            const blob=new Blob(chunks,{type:chunks[0]?.type||'audio/wav'});
-            const arrayBuf=await blob.arrayBuffer();
-            const decoded=await c.decodeAudioData(arrayBuf);
-            resolve(decoded);
-          }catch(e){
-            reject(e);
-          }
-        };
-        mediaRec.stop();
-      });
+  writeString(0,'RIFF');
+  view.setUint32(4, 36 + samples.length * 2, true);
+  writeString(8,'WAVE');
+  writeString(12,'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true); // PCM
+  view.setUint16(22, 1, true); // Mono
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 2, true);
+  view.setUint16(32, 2, true);
+  view.setUint16(34, 16, true);
+  writeString(36,'data');
+  view.setUint32(40, samples.length * 2, true);
+
+  let offset=44;
+  for(let i=0;i<samples.length;i++,offset+=2){
+    let s=Math.max(-1, Math.min(1, samples[i]));
+    view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+  }
+  return URL.createObjectURL(new Blob([buffer], {type:"audio/wav"}));
+}
+
+// پاککردنەوە و ڕیڤێرسکردنی دەنگ بەبێ قرتاندنی هیچ پیتێک
+function buildAudioUrls(rawChunks, sr){
+  let totalLen=0;
+  for(const c of rawChunks)totalLen+=c.length;
+  if(totalLen < sr * 0.25) throw new Error("تۆمارکردنەکە زۆر کورت بوو، تکایە دووبارە هەوڵ بدەوە.");
+
+  const full=new Float32Array(totalLen);
+  let off=0;
+  for(const c of rawChunks){
+    full.set(c,off);
+    off+=c.length;
+  }
+
+  // لابردنی دەنگی کرتەی پەنجە لە کۆتایی تۆمارکردن (٦٠ میلی چرکە)
+  const cutEnd=Math.max(Math.floor(sr*0.2), full.length - Math.floor(sr*0.06));
+  const d=full.subarray(0, cutEnd);
+
+  // لابردنی DC Offset بۆ نەهێشتنی تەقە و خشە
+  let sum=0;
+  for(let i=0;i<d.length;i++)sum+=d[i];
+  const mean=sum/d.length;
+  let maxPeak=0;
+  for(let i=0;i<d.length;i++){
+    d[i]-=mean;
+    const a=Math.abs(d[i]);
+    if(a>maxPeak)maxPeak=a;
+  }
+  if(maxPeak < 0.005) throw new Error("دەنگەکە زۆر نزم بوو، تکایە بە دەنگی بەرزتر قسە بکە.");
+
+  // دۆزینەوەی سەرەتا و کۆتایی قسەکردن بە هێشتنەوەی پەراوێزی تەواو بۆ پیتەکان
+  const win=Math.floor(sr*0.015);
+  const thresh=Math.max(0.004, maxPeak * 0.02);
+
+  const getRms=idx=>{
+    let s=0, end=Math.min(d.length, idx+win);
+    for(let k=idx;k<end;k++)s+=d[k]*d[k];
+    return Math.sqrt(s/Math.max(1,end-idx));
+  };
+
+  let start=0;
+  while(start < d.length - win && getRms(start) < thresh) start += win;
+  let end=d.length - win;
+  while(end > start && getRms(end) < thresh) end -= win;
+
+  // پەراوێزی ١٨٠ میلی چرکە لە پێشەوە و ٢٢٠ میلی چرکە لە دواوە تا هیچ پیتێک نەفەوتێت
+  start=Math.max(0, start - Math.floor(sr * 0.18));
+  end=Math.min(d.length, end + win + Math.floor(sr * 0.22));
+
+  const trimmedLen=Math.max(Math.floor(sr*0.2), end - start);
+  const fwd=new Float32Array(trimmedLen);
+  fwd.set(d.subarray(start, start + trimmedLen));
+
+  // بەرزکردنەوەی ئاستی دەنگ بە شێوەیەکی سروشتی (Normalize)
+  let pk=0;
+  for(let i=0;i<fwd.length;i++){
+    const a=Math.abs(fwd[i]);
+    if(a>pk)pk=a;
+  }
+  const gain=pk > 0 ? Math.min(3.5, 0.92 / pk) : 1.0;
+
+  // نەرمکردنی سەرەتا و کۆتایی (Fade-in / Fade-out)
+  const fadeLen=Math.min(Math.floor(sr*0.02), fwd.length >> 3);
+  for(let i=0;i<fwd.length;i++){
+    let g=gain;
+    if(i < fadeLen) g *= (i / fadeLen);
+    else if(i >= fwd.length - fadeLen) g *= ((fwd.length - 1 - i) / fadeLen);
+    fwd[i] = Math.max(-1, Math.min(1, fwd[i] * g));
+  }
+
+  // پێچەوانەکردنەوەی دەنگەکە
+  const rev=new Float32Array(fwd.length);
+  for(let i=0;i<fwd.length;i++){
+    rev[i]=fwd[fwd.length - 1 - i];
+  }
+
+  return {
+    fwdUrl: encodeWAV(fwd, sr),
+    revUrl: encodeWAV(rev, sr)
+  };
+}
+
+// سیستەمی تۆمارکردن کە دوای تەواوبوون یەکسەر مایکەکە دادەخات
+window._activeRec = null;
+
+async function startMicRecording(){
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  const ctx = new AudioCtx();
+  if(ctx.state === "suspended") await ctx.resume();
+
+  let stream;
+  try{
+    stream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: false
+      }
+    });
+  }catch(_){
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  }
+
+  const src = ctx.createMediaStreamSource(stream);
+  const proc = ctx.createScriptProcessor(2048, 1, 1);
+  const mute = ctx.createGain();
+  mute.gain.value = 0;
+
+  const chunks = [];
+  proc.onaudioprocess = ev => {
+    const input = ev.inputBuffer.getChannelData(0);
+    chunks.push(new Float32Array(input));
+    // نیشاندانی ئاستی دەنگ لەسەر شاشە
+    let sum=0;
+    for(let i=0;i<input.length;i+=8) sum += input[i]*input[i];
+    const rms = Math.sqrt(sum / (input.length/8));
+    const bar = $("lvlBar");
+    if(bar) bar.style.width = Math.min(100, Math.round(rms * 350)) + "%";
+  };
+
+  src.connect(proc);
+  proc.connect(mute);
+  mute.connect(ctx.destination);
+
+  // پاراستن لە سڕینەوەی خۆکارانەی سەفاری
+  window._activeRec = { ctx, stream, src, proc, mute, chunks };
+
+  return {
+    stop: async () => {
+      const r = window._activeRec;
+      window._activeRec = null;
+      if(!r) throw new Error("هیچ تۆمارکردنێک لە ئارادا نییە");
+
+      r.proc.onaudioprocess = null;
+      try{ r.src.disconnect(); r.proc.disconnect(); r.mute.disconnect(); }catch(_){}
+
+      // داخستنی تەواوەتی مایکرۆفۆن تا ئایفۆن لە دۆخی تەلەفۆن دەربچێت
+      try{ r.stream.getTracks().forEach(t => t.stop()); }catch(_){}
+      const sr = r.ctx.sampleRate || 44100;
+      try{ await r.ctx.close(); }catch(_){}
+
+      // مۆڵەتدان بە سیستەمی iOS بۆ گەڕاندنەوەی دەنگ بۆ بڵندگۆی سەرەکی
+      await sleep(180);
+      return buildAudioUrls(r.chunks, sr);
     }
   };
-}
-
-// پرۆسێسکردنی خاوێن بەبێ دەستکاریکردنی فریکوێنسی و خشەخش
-function processAudio(buf){
-  const c=getCtx();
-  const d=buf.getChannelData(0);
-  const sr=buf.sampleRate;
-  
-  const f=c.createBuffer(1,d.length,sr);
-  const r=c.createBuffer(1,d.length,sr);
-  
-  f.copyToChannel(d,0);
-  
-  const revData=new Float32Array(d.length);
-  for(let i=0;i<d.length;i++){
-    revData[i]=d[d.length-1-i];
-  }
-  r.copyToChannel(revData,0);
-  
-  return{f,r};
 }
 
 const rand=()=>KU[Math.floor(Math.random()*KU.length)];
@@ -213,77 +368,92 @@ function addPlayer(){
 }
 function rm(i){S.players.splice(i,1);render()}
 function start(){S.scores={};S.players.forEach(p=>S.scores[p]=0);S.turn=0;S.screen="choose";S.msg="";render()}
-function pick(m){S.showWord=false;S.mode=m;S.word=m==="preset"?rand():null;S.msg="";S.screen="input";render()}
-function another(){S.word=rand();S.showWord=false;render()}
-
-async function finish(buf,text){
-  const p=processAudio(buf);
-  S.fwd=p.f;
-  S.rev=p.r;
-  S.word=text;
-  S.screen="listen";
-  S.revealed=false;
-  S.checked={};
-  S.peek=false;
-  S.tryRev=null;
-  S.msg="";
-  S.busy="";
+function pick(m){
+  S.showWord = (m==="preset");
+  S.mode = m;
+  S.word = m==="preset" ? rand() : null;
+  S.msg = "";
+  S.screen = "input";
   render();
-  playBuffer(S.rev);
 }
+function another(){S.word=rand();S.showWord=true;render()}
 
-async function recordAction(){
+async function handleMainRecord(){
   try{
-    getCtx();
-    if(!S.recObj){
-      S.recObj=await startRecorder();
+    S.msg="";
+    if(S.mode==="typed" && !window._activeRec){
+      const w = $("tw") ? $("tw").value.trim() : "";
+      if(!w){ S.msg="تکایە سەرەتا وشەکە لە خانەکەدا بنووسە پاشان بە دەنگ بیڵێ"; render(); return; }
+      S.word = w;
+    }
+
+    if(!window._activeRec){
       S.busy="rec";
       render();
+      window._recController = await startMicRecording();
     }else{
-      const rec=S.recObj;
-      S.recObj=null;
-      S.busy="ئامادەکردن...";
+      unlockAudioElement();
+      const ctrl = window._recController;
+      window._recController = null;
+      S.busy="پێچەوانە دەکرێتەوە...";
       render();
-      const decodedBuf=await rec.stop();
-      finish(decodedBuf,S.word);
+      const res = await ctrl.stop();
+      S.fwdUrl = res.fwdUrl;
+      S.revUrl = res.revUrl;
+      S.screen = "listen";
+      S.revealed = false;
+      S.checked = {};
+      S.peek = false;
+      S.tryRevUrl = null;
+      S.busy = "";
+      render();
+      playUrl(S.revUrl, S.speed);
     }
   }catch(err){
     S.busy="";
-    S.recObj=null;
-    S.msg="کێشەیەک لە تۆمارکردن هەیە. تکایە لە Safari ڕێگە بە مایکرۆفۆن بدە.";
+    window._recController = null;
+    S.msg = err.message || "کێشە لە مایکرۆفۆن هەیە، تکایە لە Safari ڕێگە بە مایک بدە.";
     render();
   }
+}
+
+async function handleTryRecord(){
+  try{
+    S.msg="";
+    if(!window._activeRec){
+      S.busy="tryRec";
+      render();
+      window._tryController = await startMicRecording();
+    }else{
+      unlockAudioElement();
+      const ctrl = window._tryController;
+      window._tryController = null;
+      S.busy="ئامادەکردن...";
+      render();
+      const res = await ctrl.stop();
+      S.tryRevUrl = res.revUrl;
+      S.busy="";
+      render();
+      playUrl(S.tryRevUrl, 1.0);
+    }
+  }catch(err){
+    S.busy="";
+    window._tryController = null;
+    S.msg = err.message || "هەڵە لە تۆمارکردن";
+    render();
+  }
+}
+
+function setSpeed(sp){
+  S.speed = sp;
+  render();
+  playUrl(S.revUrl, S.speed);
 }
 
 function tog(i,v){
   S.checked[i]=S.checked[i]===v?0:v;
   if(S.checked[i]>0&&window.confetti)confetti({particleCount:40,spread:60,origin:{y:0.8}});
   render();
-}
-
-let tryRecorder=null;
-async function tryRecordAction(){
-  try{
-    getCtx();
-    if(!tryRecorder){
-      tryRecorder=await startRecorder();
-      S.busy="tryRec";
-      render();
-    }else{
-      const rec=tryRecorder;
-      tryRecorder=null;
-      S.busy="";
-      const decodedBuf=await rec.stop();
-      S.tryRev=processAudio(decodedBuf).r;
-      render();
-      playBuffer(S.tryRev);
-    }
-  }catch(err){
-    tryRecorder=null;
-    S.busy="";
-    S.msg="مایک کار ناکات";
-    render();
-  }
 }
 
 function reveal(){S.revealed=true;render()}
@@ -305,10 +475,22 @@ function end(){
   if(window.confetti)confetti({particleCount:100,spread:70,origin:{y:0.6}});
   render();
 }
-function back(){S.screen="choose";S.recObj=null;S.busy="";render()}
+
+async function back(){
+  if(window._activeRec){
+    try{
+      window._activeRec.stream.getTracks().forEach(t=>t.stop());
+      await window._activeRec.ctx.close();
+    }catch(_){}
+    window._activeRec=null;
+  }
+  S.screen="choose";
+  S.busy="";
+  render();
+}
 
 function board(){
-  return S.players.length>1?'<div class="card"><h3 style="margin:0 0 10px;font-size:16px;color:var(--gold)">🏆 خاڵەکان</h3>'+S.players.slice().sort((a,b)=>S.scores[b]-S.scores[a]).map(p=>`<div class="sc"><span>${e(p)}</span><b style="color:var(--ok)">${S.scores[p]} خاڵ</b></div>`).join("")+"</div>":"";
+  return S.players.length>1?'<div class="card"><h3 style="margin:0 0 10px;font-size:16px;color:var(--gold)">🏆 ڕیزبەندی خاڵەکان</h3>'+S.players.slice().sort((a,b)=>S.scores[b]-S.scores[a]).map(p=>`<div class="sc"><span>${e(p)}</span><b style="color:var(--ok)">${S.scores[p]} خاڵ</b></div>`).join("")+"</div>":"";
 }
 
 function render(){
@@ -321,68 +503,85 @@ function render(){
         <span><b>KAROSH</b> STUDIO</span>
       </div>
       <div class="hero-title">یاری ڕیڤێرس 🔁</div>
-      <div class="hero-sub">دەنگت پێچەوانە بکەرەوە و تاقی بکەرەوە!</div>
+      <div class="hero-sub">دروستکراوی ستودیۆی کارۆش</div>
     </div>`;
 
   if(S.screen==="setup"){
     h=`<div class="card">
-      <h3 style="margin:0 0 10px">👥 ناوی یاریزانەکان</h3>
+      <h3 style="margin:0 0 10px">👥 یاریزانەکان زیاد بکە</h3>
       <div class="row">
-        <input id="pn" placeholder="ناوی یاریزان بنووسە..." onkeydown="if(event.key==='Enter')addPlayer()">
-        <button class="s p" onclick="addPlayer()">+ زیادکردن</button>
+        <input id="pn" placeholder="ناوی یاریزان..." onkeydown="if(event.key==='Enter')addPlayer()">
+        <button class="s p" onclick="addPlayer()">+ زیاد</button>
       </div>
       <div class="chips">${S.players.map((p,i)=>`<span class="chip">${e(p)} <a onclick="rm(${i})">✕</a></span>`).join("")}</div>
-      <p style="margin:10px 0 0;font-size:14px;color:var(--mu)">${n===0?"تکایە ناوی لانیکەم یەک کەس دابنێ":n===1?"یاری بە تەنیا":n+" یاریزان بەشدارن"}</p>
+      <p style="margin:10px 0 0;font-size:14px;color:var(--mu)">${n===0?"تکایە ناوی لانیکەم یەک یاریزان بنووسە":n===1?"یاری بە تەنیا (ڕاهێنان)":n+" یاریزان ئامادەن"}</p>
     </div>
     <button class="g" ${n?"":"disabled"} onclick="start()">🚀 دەستپێکردنی یاری</button>`;
   }else if(S.screen==="choose"){
     h=`<div class="card" style="text-align:center">
-      <h2 style="margin:0 0 4px">${n>1?"نۆبەی: <span style='color:var(--gold)'>"+e(cur_())+"</span> 🎯":"🎤 خۆت یان وشەیەک؟"}</h2>
+      <h2 style="margin:0 0 4px">${n>1?"نۆبەی: <span style='color:var(--gold)'>"+e(cur_())+"</span> 🎤":"🎤 شێوازێک هەڵبژێرە"}</h2>
+      <p style="margin:0;color:var(--mu);font-size:14px">چۆن دەتەوێت وشەکە بڵێیت؟</p>
     </div>
-    <button class="p" onclick="pick('speak')">🗣️ وشەیەک بە دەنگ دەڵێم</button>
-    <button class="p" onclick="pick('preset')">🎲 وشەیەکم پێ بدە بۆ گوتن</button>
+    <button class="p" onclick="pick('speak')">🗣️ خۆم وشەیەک لە مێشکم دەڵێم</button>
+    <button class="p" onclick="pick('preset')">🎲 وشەیەکی ئامادەم پێ بدە</button>
+    <button class="p" onclick="pick('typed')">⌨️ وشەکە دەنووسم و دەیڵێم</button>
     ${board()}
     <button onclick="end()" style="color:#ef4444;border-color:rgba(239,68,68,0.3)">🛑 کۆتایی یاری</button>`;
   }else if(S.screen==="input"){
     const m=S.mode;
     h=`<div class="card">
-      <h2 style="margin:0 0 8px">${m==="preset"?"🎲 ئەم وشەیە بە دەنگ بڵێ:":"🗣️ وشەکەت بە دەنگ بڵێ"}</h2>`+
-      (m==="preset"?`<div class="big-box"><div class="big">${S.showWord?e(S.word):"• • •"}</div></div><button onclick="S.showWord=!S.showWord;render()">👁 ${S.showWord?"شاردنەوەی وشە":"پیشاندانی وشە"}</button><button onclick="another()" ${S.busy?"disabled":""}>🔄 وشەیەکی تر</button>`:"")+
-      `<p style="color:var(--mu);font-size:14px">دوگمەی سوور دابگرە، وشەکە بڵێ و دووبارە دایبگرەوە بۆ وەستان.</p>
-      <button id="bz" class="${S.busy==="rec"?"red":"p"}" onclick="recordAction()">
-        ${S.busy==="rec"?'<span class="pulse">⏹ وەستان و پێچەوانەکردنەوە</span>':S.busy?e(S.busy):"⏺ دەستپێکردنی تۆمارکردن"}
+      <h2 style="margin:0 0 8px">${m==="preset"?"🎲 ئەم وشەیە بە دەنگ بڵێ:":m==="typed"?"⌨️ وشەکە بنووسە و بیڵێ:":"🗣️ وشەکەت بە دەنگ بڵێ"}</h2>`+
+      (m==="preset"?`<p style="color:var(--mu);font-size:13px;margin:0">نهێنییە! مەهێڵە ئەوانی تر شاشەکە ببینن پێش تۆمارکردن:</p><div class="big-box"><div class="big">${S.showWord?e(S.word):"• • •"}</div></div><div class="row"><button onclick="S.showWord=!S.showWord;render()">👁 ${S.showWord?"شاردنەوە":"پیشاندان"}</button><button onclick="another()" ${S.busy?"disabled":""}>🔄 وشەی تر</button></div>`:"")+
+      (m==="typed"?`<input id="tw" value="${S.word?e(S.word):""}" placeholder="وشەکە لێرە بنووسە (بۆ نموونە: کوردستان)..." autocomplete="off">`:"")+
+      `<p style="color:var(--mu);font-size:14px;margin:10px 0 6px">دوگمەکە دابگرە، بە دەنگێکی ڕوون وشەکە بڵێ، پاشان یەکسەر دایبگرەوە:</p>
+      ${S.busy==="rec"?`<div class="meter-wrap"><div id="lvlBar" class="meter-bar"></div></div>`:""}
+      <button id="bz" class="${S.busy==="rec"?"red":"p"}" onclick="handleMainRecord()" ${S.busy&&S.busy!=="rec"?"disabled":""}>
+        ${S.busy==="rec"?'<span class="pulse">⏹ وەستان و ڕیڤێرسکردن</span>':S.busy?e(S.busy):"⏺ دەستپێکردنی تۆمارکردن"}
       </button>
-      ${S.msg?`<p style="color:#ef4444;font-size:14px;margin-top:6px">${e(S.msg)}</p>`:""}
+      ${S.msg?`<p style="color:#ef4444;font-size:14px;margin-top:8px">${e(S.msg)}</p>`:""}
     </div>
     <button onclick="back()">⬅️ گەڕانەوە</button>`;
   }else if(S.screen==="listen"){
-    const others=S.players.map((p,i)=>[p,i]).filter(x=>S.mode==="preset"||x[1]!==S.turn);
+    const others=S.players.map((p,i)=>[p,i]).filter(x=>x[1]!==S.turn);
     h=`<div class="card" style="text-align:center">
-      <h2 style="margin:0 0 10px">گوێ بگرن و بیزانن! 👂</h2>
-      <button class="p" onclick="playBuffer(S.rev)" style="font-size:18px;padding:18px">▶ گوێگرتن لە دەنگی ڕیڤێرس</button>
+      <h2 style="margin:0 0 10px">گوێ بگرن و بزانن چ وشەیەکە! 👂</h2>
+      <button class="p" onclick="playUrl(S.revUrl, S.speed)" style="font-size:18px;padding:18px">▶ لێدانی دەنگی ڕیڤێرس</button>
+      <div class="row" style="margin-top:6px">
+        <button class="${S.speed===1.0?'on':''}" onclick="setSpeed(1.0)">⚡ خێرایی ئاسایی (1x)</button>
+        <button class="${S.speed===0.75?'on':''}" onclick="setSpeed(0.75)">🐢 خاوکردنەوە (0.75x)</button>
+      </div>
     </div>`;
+
     if(!S.revealed){
       h+=`<div class="card">`;
-      if(S.word){h+=`<button onclick="S.peek=!S.peek;render()">🙈 قسەکەر: ${S.peek?"شاردنەوە":"بینینی وشە"}</button>`;if(S.peek)h+=`<div class="big-box"><div class="big">${e(S.word)}</div></div>`}
-      h+=`<button class="g" onclick="reveal()">👁 پیشاندانی دەنگی ڕاستەقینە</button></div>`;
+      if(S.word){
+        h+=`<button onclick="S.peek=!S.peek;render()">🙈 قسەکەر: ${S.peek?"شاردنەوەی وشە":"بینینی وشەکە"}</button>`;
+        if(S.peek)h+=`<div class="big-box"><div class="big">${e(S.word)}</div></div>`;
+      }
+      h+=`<button class="g" onclick="reveal()">👁 ئاشکراکردنی وشە و دەنگی ڕاستەقینە</button></div>`;
     }else{
       h+=`<div class="card">
-        ${S.word?`<div class="big-box"><div class="big">${e(S.word)}</div></div>`:""}
-        <button onclick="playBuffer(S.fwd)">▶ دەنگی ڕاستەقینەی وشەکە</button>
+        ${S.word?`<div class="big-box"><div class="big">${e(S.word)}</div></div>`:`<p style="margin:0 0 8px;color:var(--gold);font-weight:bold">دەنگی ڕاستەقینەی تۆمارکراو:</p>`}
+        <button onclick="playUrl(S.fwdUrl, 1.0)">▶ گوێگرتن لە دەنگی ڕاستەقینە</button>
       </div>
       <div class="card">
-        <h3 style="margin:0 0 6px">🎯 هەوڵی ڕیڤێرس</h3>
-        <p style="color:var(--mu);font-size:13px;margin:0 0 10px">یاریزانێک وشە پێچەوانەکە دەڵێتەوە تا بزانرێت دەبێتەوە بە وشە ڕاستەکە:</p>
-        <button class="${S.busy==="tryRec"?"red":"p"}" onclick="tryRecordAction()">${S.busy==="tryRec"?"⏹ وەستان":"⏺ تاقیکردنەوە"}</button>
-        ${S.tryRev?'<button onclick="playBuffer(S.tryRev)">▶ ئەنجامی تاقیکردنەوە</button>':""}
+        <h3 style="margin:0 0 6px">🎯 تەحەدای ڕیڤێرس (٢ خاڵ)</h3>
+        <p style="color:var(--mu);font-size:13px;margin:0 0 10px">یاریزانێک هەوڵ دەدات دەنگە پێچەوانەکە لاسایی بکاتەوە؛ ئەگەر وشە ڕاستەکەی لێ دەرچوو ٢ خاڵ دەباتەوە!</p>
+        ${S.busy==="tryRec"?`<div class="meter-wrap"><div id="lvlBar" class="meter-bar"></div></div>`:""}
+        <button class="${S.busy==="tryRec"?"red":"p"}" onclick="handleTryRecord()">
+          ${S.busy==="tryRec"?'<span class="pulse">⏹ وەستان و تاقیکردنەوە</span>':"⏺ تۆمارکردنی هەوڵی یاریزان"}
+        </button>
+        ${S.tryRevUrl?'<button class="g" onclick="playUrl(S.tryRevUrl, 1.0)">▶ گوێگرتن لە ئەنجامی هەوڵەکە</button>':""}
+        ${S.msg?`<p style="color:#ef4444;font-size:14px;margin-top:8px">${e(S.msg)}</p>`:""}
       </div>`;
+
       if(n>1){
         h+=`<div class="card">
           <h3 style="margin:0 0 10px">کێ زانی؟</h3>
           ${others.map(([p,i])=>`<div style="margin-top:10px"><b>${e(p)}</b><div class="row" style="margin-top:6px"><button class="${S.checked[i]===1?"on":""}" onclick="tog(${i},1)">✅ زانی (١)</button><button class="${S.checked[i]===2?"on":""}" onclick="tog(${i},2)">🔥 ڕیڤێرس (٢)</button></div></div>`).join("")}
         </div>`;
       }
-      h+=`<button class="g" onclick="next()">${n>1?"تۆمارکردن و یاریزانی داهاتوو ➡️":"خولی نوێ"}</button>`;
+      h+=`<button class="g" onclick="next()">${n>1?"تۆمارکردنی خاڵ و نۆبەی داهاتوو ➡️":"خولی نوێ 🔄"}</button>`;
     }
   }else{
     h=`<div class="card" style="text-align:center">
@@ -390,12 +589,12 @@ function render(){
       <h1 style="margin:8px 0">ئەنجامی کۆتایی</h1>
       ${board()}
     </div>
-    <button class="p" onclick="S.screen='setup';render()">🔄 دەستپێکردنەوەی یاری نوێ</button>`;
+    <button class="p" onclick="S.screen='setup';render()">🔄 یاری نوێ</button>`;
   }
 
   A.innerHTML = header + h + `
     <a class="foot" href="https://karoshgroup.com" target="_blank" rel="noopener">
-      مافی چاپ و بڵاوکردنەوە پارێزراوە بۆ <b>Karosh Studio</b>
+      دروستکراوی <b>ستودیۆی کارۆش</b> · Karosh Studio
     </a>`;
 }
 
